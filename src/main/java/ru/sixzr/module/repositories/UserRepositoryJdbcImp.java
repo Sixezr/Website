@@ -1,4 +1,4 @@
-package ru.sixzr.module.managers;
+package ru.sixzr.module.repositories;
 
 import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.repositories.UserRepository;

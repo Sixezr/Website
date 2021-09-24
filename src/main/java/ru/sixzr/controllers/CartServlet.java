@@ -1,7 +1,7 @@
 package ru.sixzr.controllers;
 
 import ru.sixzr.module.jdbc.SimpleDataSource;
-import ru.sixzr.module.managers.UserRepositoryJdbcImp;
+import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 import ru.sixzr.module.repositories.UserRepository;
 
 import javax.servlet.ServletException;

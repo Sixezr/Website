@@ -4,7 +4,7 @@ import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.jdbc.SimpleDataSource;
 import ru.sixzr.module.managers.SessionManager;
-import ru.sixzr.module.managers.UserRepositoryJdbcImp;
+import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

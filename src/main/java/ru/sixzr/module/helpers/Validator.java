@@ -1,8 +1,6 @@
 package ru.sixzr.module.helpers;
 
 import ru.sixzr.module.entities.UserModel;
-import ru.sixzr.module.jdbc.SimpleDataSource;
-import ru.sixzr.module.managers.UserRepositoryJdbcImp;
 import ru.sixzr.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;

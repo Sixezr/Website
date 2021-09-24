@@ -12,11 +12,11 @@
           <div class="card shadow-sm">
             <img src="/semestrovka/img/1.jpeg" alt="...">
             <div class="card-body">
-              <p>Курица с картошкой</p>
+              <p>${product.getName()}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
                 </div>
               </div>
             </div>
