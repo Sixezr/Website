@@ -4,7 +4,7 @@
 <c:set var = "form_width" value = "40"/>
 <%@include file="/WEB-INF/views/components/_header.jsp"%>
 
-<form action="http://localhost:8080/semestrovka/register" method="post">
+<form action="http://localhost:8080${pageContext.request.contextPath}/register" method="post">
     <div id="reg-title">Регистрация</div>
     <input name="name" class="form-control" type="text" placeholder="Имя" aria-label="default input example" required>
     <input name="second-name" class="form-control" type="text" placeholder="Фамилия" aria-label="default input example" required>

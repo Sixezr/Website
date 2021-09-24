@@ -26,13 +26,13 @@
     <div id="carouselExampleControls" class="carousel slide carousel-fade" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="/semestrovka/img/1.jpeg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/img/1.jpeg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/semestrovka/img/2.jpeg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/img/2.jpeg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="/semestrovka/img/3.jpeg" class="d-block w-100" alt="...">
+                <img src="${pageContext.request.contextPath}/img/3.jpeg" class="d-block w-100" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -46,5 +46,5 @@
     </div>
 </div>
 
-<script src="/semestrovka/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <%@include file="/WEB-INF/views/components/_footer.jsp"%>

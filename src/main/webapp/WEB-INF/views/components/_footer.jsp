@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
@@ -9,9 +10,9 @@
         </div>
 
         <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3"><a class="text-muted" href="#"><img src="/semestrovka/img/vk-logo.png" alt="vk" width="32" height="32"></a></li>
-            <li class="ms-3"><a class="text-muted" href="#"><img src="/semestrovka/img/tg-logo.png" alt="tg" width="32" height="32"></a></li>
-            <li class="ms-3"><a class="text-muted" href="#"><img src="/semestrovka/img/insta-logo.png" alt="insta" width="32" height="32"></a></li>
+            <li class="ms-3"><a class="text-muted" href="#"><img src="${pageContext.request.contextPath}/img/vk-logo.png" alt="vk" width="32" height="32"></a></li>
+            <li class="ms-3"><a class="text-muted" href="#"><img src="${pageContext.request.contextPath}/img/tg-logo.png" alt="tg" width="32" height="32"></a></li>
+            <li class="ms-3"><a class="text-muted" href="#"><img src="${pageContext.request.contextPath}/img/insta-logo.png" alt="insta" width="32" height="32"></a></li>
         </ul>
     </footer>
 </div>

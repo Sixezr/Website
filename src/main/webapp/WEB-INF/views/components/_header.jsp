@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
-    <link rel="shortcut icon" href="/semestrovka/img/logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="/semestrovka/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/semestrovka/css/style.css">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 
     <style>
         @media (max-width: 520px) {

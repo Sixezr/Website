@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="d-grid gap-2">
-        <form action="http://localhost:8080/WebAppFirst_war/account" method="get">
+        <form action="http://localhost:8080${pageContext.request.contextPath}/account" method="get">
             <button type="submit" class="btn btn-primary btn-secondary" name="action" value="change">Изменить данные</button>
             <button type="submit" class="btn btn-primary btn-danger"  name="action" value="quit">Выйти</button>
         </form>

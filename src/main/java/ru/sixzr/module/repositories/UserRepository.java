@@ -9,4 +9,3 @@ public interface UserRepository extends Repository<UserModel> {
     Optional<UserModel> findByEmail(String email);
 
 }
-

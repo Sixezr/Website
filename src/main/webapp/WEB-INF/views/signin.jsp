@@ -5,7 +5,7 @@
 <%@include file="/WEB-INF/views/components/_header.jsp"%>
 
 <div class="container">
-  <form action="http://localhost:8080/semestrovka/account" method="post">
+  <form action="http://localhost:8080${pageContext.request.contextPath}/account" method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
       <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
@@ -15,7 +15,7 @@
       <label for="pass" class="form-label">Password</label>
       <input name="pass" type="password" class="form-control" id="pass" required>
     </div>
-    <div><a href="/semestrovka/register" id="register-href">Нет аккаунта? Создайте его!</a></div>
+    <div><a href="${pageContext.request.contextPath}/register" id="register-href">Нет аккаунта? Создайте его!</a></div>
 
     <c:if test="${error != null}">
       <div id="error">${error}</div>
