@@ -40,6 +40,11 @@ p::first-letter {
   margin-bottom: 25px;
 }
 
+.not-found {
+  font-size: 6rem;
+  text-align: center;
+}
+
 #carousel {
   width: 10px;
   height: 10px;

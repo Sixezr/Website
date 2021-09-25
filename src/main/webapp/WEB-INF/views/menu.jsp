@@ -5,12 +5,13 @@
 
 <div class="album py-5">
   <div class="container">
+    <button type="button" class="btn btn-secondary">Добавить товар</button>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
       <c:forEach items="${products}" var="product">
         <div class="col">
           <div class="card shadow-sm">
-            <img src="/semestrovka/img/1.jpeg" alt="...">
+            <img src="${pageContext.request.contextPath}/img/1.jpeg" alt="${product.getName()}">
             <div class="card-body">
               <p>${product.getName()}</p>
               <div class="d-flex justify-content-between align-items-center">
