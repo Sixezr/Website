@@ -1,12 +1,11 @@
 package ru.sixzr.module.managers;
 
 import org.apache.commons.io.FileUtils;
-import ru.sixzr.exceptions.FileException;
+import ru.sixzr.exceptions.FileSystemManagerException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -25,7 +24,7 @@ public class FileSystemManager {
        random = new SecureRandom();
     }
 
-    public String downloadFile(HttpServletRequest req) throws FileException {
+    public String downloadFile(HttpServletRequest req) throws FileSystemManagerException {
         File file = new File(PATH_TO_UPLOADS+generateRandomName()+EXTENSION);
         Part part;
         InputStream inputStream;
@@ -34,12 +33,12 @@ public class FileSystemManager {
             part = req.getPart("photo");
             inputStream = part.getInputStream();
         } catch (IOException | ServletException e) {
-            throw new FileException(e);
+            throw new FileSystemManagerException(e);
         }
         try {
             Files.copy(inputStream, file.toPath());
         } catch (IOException e) {
-            throw new FileException(e);
+            throw new FileSystemManagerException(e);
         }
         copyFilesToWeb(req.getContextPath());
         return file.getName();
