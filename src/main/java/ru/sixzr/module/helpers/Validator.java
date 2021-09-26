@@ -1,6 +1,9 @@
 package ru.sixzr.module.helpers;
 
+import ru.sixzr.exceptions.FileException;
+import ru.sixzr.module.entities.ProductModel;
 import ru.sixzr.module.entities.UserModel;
+import ru.sixzr.module.managers.FileSystemManager;
 import ru.sixzr.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +13,48 @@ public class Validator {
 
     private static final String ERROR = "error";
     private UserRepository userRepository;
+    private FileSystemManager fileSystemManager;
 
     public Validator(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public Validator() {
+        this.fileSystemManager = new FileSystemManager();
+    }
+
+    public ProductModel validateAddingForm(HttpServletRequest req) {
+        String name = req.getParameter("name");
+        String stringPrice = req.getParameter("price");
+
+        if (name == null) {
+            req.setAttribute(ERROR, "Название не может быть пустым");
+            return null;
+        } else if (stringPrice == null) {
+            req.setAttribute(ERROR, "Цента не может быть пустой");
+            return null;
+        }
+
+        name = name.trim();
+        stringPrice = stringPrice.trim();
+        double price;
+
+        try {
+            price = Double.parseDouble(stringPrice.replaceAll(",", "."));
+        } catch (NumberFormatException e) {
+            req.setAttribute(ERROR, "Цена не должна содержать ничего, кроме цифр");
+            return null;
+        }
+        String photo;
+
+        try {
+            photo = fileSystemManager.downloadFile(req);
+        } catch (FileException e) {
+            req.setAttribute(ERROR, "Проблема с загрузкой файла, повторите попытку");
+            return null;
+        }
+
+        return new ProductModel(name, price, photo);
     }
 
     public UserModel validateSignInForm(HttpServletRequest req) {
