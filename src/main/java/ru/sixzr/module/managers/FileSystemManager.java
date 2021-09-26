@@ -6,6 +6,7 @@ import ru.sixzr.exceptions.FileException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.file.Files;
@@ -40,11 +41,12 @@ public class FileSystemManager {
         } catch (IOException e) {
             throw new FileException(e);
         }
-        copyFilesToWeb(file.getParentFile(), req.getContextPath());
+        copyFilesToWeb(req.getContextPath());
         return file.getName();
     }
 
-    public void copyFilesToWeb(File directory, String context) {
+    public void copyFilesToWeb(String context) {
+        File directory = new File(PATH_TO_UPLOADS);
         File webDirectory =  new File(PATH_TO_WEB+context+PATH_TO_IMG_IN_WEB);
         webDirectory.mkdirs();
         if (webDirectory.listFiles().length != directory.listFiles().length) {
