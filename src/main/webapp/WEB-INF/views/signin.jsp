@@ -5,7 +5,7 @@
 <%@include file="/WEB-INF/views/components/_header.jsp"%>
 
 <div class="container">
-  <form action="http://localhost:8080${pageContext.request.contextPath}/account" method="post">
+  <form method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
       <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
