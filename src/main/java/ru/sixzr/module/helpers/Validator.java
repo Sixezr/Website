@@ -1,6 +1,6 @@
 package ru.sixzr.module.helpers;
 
-import ru.sixzr.exceptions.FileSystemManagerException;
+import ru.sixzr.module.exceptions.FileSystemManagerException;
 import ru.sixzr.module.entities.ProductModel;
 import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.managers.FileSystemManager;

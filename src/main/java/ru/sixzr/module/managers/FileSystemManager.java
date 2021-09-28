@@ -1,7 +1,7 @@
 package ru.sixzr.module.managers;
 
 import org.apache.commons.io.FileUtils;
-import ru.sixzr.exceptions.FileSystemManagerException;
+import ru.sixzr.module.exceptions.FileSystemManagerException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

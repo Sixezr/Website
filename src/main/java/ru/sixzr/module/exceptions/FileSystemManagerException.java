@@ -1,4 +1,4 @@
-package ru.sixzr.exceptions;
+package ru.sixzr.module.exceptions;
 
 public class FileSystemManagerException extends Exception {
 
