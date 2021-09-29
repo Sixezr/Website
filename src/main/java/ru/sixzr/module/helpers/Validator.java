@@ -27,7 +27,6 @@ public class Validator {
         String name = req.getParameter("name");
         String stringPrice = req.getParameter("price");
 
-        System.out.println(name+" "+stringPrice);
         if (name == null) {
             req.setAttribute(ERROR, "Название не может быть пустым");
             return null;
