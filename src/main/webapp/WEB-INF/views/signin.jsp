@@ -8,7 +8,7 @@
   <form method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+      <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" value="${repeated_email == "" ? "" : repeated_email}" required>
       <div id="emailHelp" class="form-text">Никто не узнает ваши данные</div>
     </div>
     <div class="mb-3">

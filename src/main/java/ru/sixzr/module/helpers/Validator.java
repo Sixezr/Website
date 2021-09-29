@@ -60,6 +60,8 @@ public class Validator {
     public UserModel validateSignInForm(HttpServletRequest req) {
         String email = req.getParameter("email");
         String pass = req.getParameter("pass");
+
+        req.setAttribute("repeated_email", email);
         if (email == null) {
             req.setAttribute(ERROR, "Email не может быть пустым");
             return null;
