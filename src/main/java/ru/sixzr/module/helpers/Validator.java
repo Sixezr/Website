@@ -86,6 +86,11 @@ public class Validator {
         String email = req.getParameter("email");
         String pass = req.getParameter("pass");
 
+        req.setAttribute("repeated_name", name);
+        req.setAttribute("repeated_s_name", secondName);
+        req.setAttribute("repeated_phone", phoneNumber);
+        req.setAttribute("repeated_email", email);
+
         if (name == null) {
             req.setAttribute(ERROR, "Имя не может быть пустым");
             return null;
