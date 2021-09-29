@@ -1,9 +1,10 @@
 package ru.sixzr.controllers;
 
-import ru.sixzr.module.jdbc.SimpleDataSource;
 import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 import ru.sixzr.module.repositories.UserRepository;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +16,17 @@ import java.io.IOException;
 public class CartServlet extends HttpServlet {
 
     private UserRepository userRepository;
+    private ServletContext context;
 
     @Override
-    public void init() throws ServletException {
-        userRepository = new UserRepositoryJdbcImp(new SimpleDataSource());
+    public void init(ServletConfig config) {
+        context = config.getServletContext();
+        userRepository = (UserRepositoryJdbcImp) context.getAttribute("userRepository");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("users", userRepository.findAll());
-        getServletContext().getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
+        context.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
     }
 }

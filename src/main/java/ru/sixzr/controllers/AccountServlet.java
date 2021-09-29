@@ -2,10 +2,11 @@ package ru.sixzr.controllers;
 
 import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.helpers.Validator;
-import ru.sixzr.module.jdbc.SimpleDataSource;
 import ru.sixzr.module.managers.SessionManager;
 import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,11 +18,12 @@ import java.io.IOException;
 public class AccountServlet extends HttpServlet {
 
     private Validator validator;
+    private ServletContext context;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-        this.validator = new Validator(new UserRepositoryJdbcImp(new SimpleDataSource()));
+    public void init(ServletConfig config) {
+        context = config.getServletContext();
+        validator = new Validator((UserRepositoryJdbcImp) context.getAttribute("userRepository"));
     }
 
     @Override
@@ -39,9 +41,9 @@ public class AccountServlet extends HttpServlet {
             }
         }
         if (SessionManager.isSigned(req)) {
-            getServletContext().getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
+            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
         } else {
-            getServletContext().getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
         }
     }
 
@@ -50,10 +52,10 @@ public class AccountServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         UserModel user = validator.validateSignInForm(req);
         if (user == null) {
-            getServletContext().getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
         } else {
             SessionManager.signIn(req, user);
-            getServletContext().getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
+            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
         }
     }
 }
