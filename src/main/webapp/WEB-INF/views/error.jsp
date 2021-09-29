@@ -5,7 +5,7 @@
 
 <div class="container not-found">
   Страница не найдена
-  <img src="${pageContext.request.contextPath}/img/not-found.png" alt="logo" width="160" height="160">
+  <img src="<c:url value = "/img/not-found.png"/>" alt="logo" width="160" height="160">
 </div>
 
 <%@include file="/WEB-INF/views/components/_footer.jsp"%>

@@ -15,7 +15,7 @@
       <label for="pass" class="form-label">Password</label>
       <input name="pass" type="password" class="form-control" id="pass" required>
     </div>
-    <div><a href="${pageContext.request.contextPath}/register" id="register-href">Нет аккаунта? Создайте его!</a></div>
+    <div><a href="<c:url value = "/register"/>" id="register-href">Нет аккаунта? Создайте его!</a></div>
 
     <c:if test="${error != null}">
       <div id="error">${error}</div>

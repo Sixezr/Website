@@ -6,10 +6,10 @@
             <span class="fs-4">Myaso</span>
         </a>
         <ul class="nav nav-pills">
-            <li class="nav-item"><a href="${pageContext.request.contextPath}/cart" class="nav-link">Корзина</a></li>
-            <li class="nav-item"><a href="${pageContext.request.contextPath}/menu" class="nav-link">Меню</a></li>
-            <li class="nav-item"><a href="${pageContext.request.contextPath}/about/" class="nav-link">О нас</a></li>
-            <li class="nav-item"><a href="${pageContext.request.contextPath}/account" class="nav-link">Аккаунт</a></li>
+            <li class="nav-item"><a href="<c:url value = "/cart"/>" class="nav-link">Корзина</a></li>
+            <li class="nav-item"><a href="<c:url value = "/menu"/>" class="nav-link">Меню</a></li>
+            <li class="nav-item"><a href="<c:url value = "/about/"/>" class="nav-link">О нас</a></li>
+            <li class="nav-item"><a href="<c:url value = "/account"/>" class="nav-link">Аккаунт</a></li>
         </ul>
     </header>
 </div>
