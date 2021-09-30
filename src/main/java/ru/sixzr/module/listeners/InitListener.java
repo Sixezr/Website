@@ -2,6 +2,7 @@ package ru.sixzr.module.listeners;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.FileSystemManager;
 import ru.sixzr.module.managers.SecurityManager;
 import ru.sixzr.module.repositories.ProductRepository;
@@ -41,11 +42,13 @@ public class InitListener implements ServletContextListener {
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
         FileSystemManager fileSystemManager = new FileSystemManager();
         SecurityManager securityManager = new SecurityManager();
+        Validator validator = new Validator(userRepository);
 
         servletContext.setAttribute("userRepository", userRepository);
         servletContext.setAttribute("productRepository", productRepository);
         servletContext.setAttribute("fileSystemManager", fileSystemManager);
         servletContext.setAttribute("securityManager", securityManager);
+        servletContext.setAttribute("validator", validator);
     }
 
     @Override

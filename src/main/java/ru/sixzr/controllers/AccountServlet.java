@@ -23,7 +23,7 @@ public class AccountServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        validator = new Validator((UserRepositoryJdbcImp) context.getAttribute("userRepository"));
+        validator = (Validator) context.getAttribute("validator");
     }
 
     @Override

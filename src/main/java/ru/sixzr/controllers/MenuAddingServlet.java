@@ -31,7 +31,7 @@ public class MenuAddingServlet extends HttpServlet {
         context = config.getServletContext();
         productRepository = (ProductRepositoryJdbcImpl) context.getAttribute("productRepository");
         securityManager = (SecurityManager) context.getAttribute("securityManager");
-        validator = new Validator();
+        validator = (Validator) context.getAttribute("validator");
     }
 
     @Override

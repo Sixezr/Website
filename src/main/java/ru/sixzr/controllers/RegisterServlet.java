@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
     public void init(ServletConfig config) {
         context = config.getServletContext();
         repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute("userRepository");
-        validator = new Validator(repositoryJdbc);
+        validator = (Validator) context.getAttribute("validator");
     }
 
     @Override
