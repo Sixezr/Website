@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class UserRepositoryJdbcImp implements UserRepository {
 
     //language=SQL
-    private static final String SQL_INSERT_USER = "INSERT INTO \"user\"(name, second_name, phone, email, pass) VALUES(?,?,?,?,?)";
+    private static final String SQL_INSERT_USER = "INSERT INTO \"user\"(name, second_name, phone, email, pass, key, is_admin) VALUES(?,?,?,?,?,?,?)";
 
     //language=SQL
     private static final String SQL_FIND_BY_ID = "SELECT * FROM  \"user\" WHERE id = ?";
@@ -39,8 +39,13 @@ public class UserRepositoryJdbcImp implements UserRepository {
             String email = row.getString("email");
             String pass = row.getString("pass");
             String phone = row.getString("phone");
+            String token = row.getString("key");
+            boolean isAdmin = row.getBoolean("is_admin");
 
-            return new UserModel(id, firstName, lastName, email, pass, phone);
+            UserModel user = new UserModel(id, firstName, lastName, email, pass, phone);
+            user.setAdmin(isAdmin);
+            user.setToken(token);
+            return user;
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
@@ -101,11 +106,14 @@ public class UserRepositoryJdbcImp implements UserRepository {
     public void save(UserModel entity) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(SQL_INSERT_USER)) {
-            statement.setString(1, entity.getName());
-            statement.setString(2, entity.getSecondName());
-            statement.setString(3, entity.getPhoneNumber());
-            statement.setString(4, entity.getEmail());
-            statement.setString(5, entity.getPass());
+            int counter = 1;
+            statement.setString(counter++, entity.getName());
+            statement.setString(counter++, entity.getSecondName());
+            statement.setString(counter++, entity.getPhoneNumber());
+            statement.setString(counter++, entity.getEmail());
+            statement.setString(counter++, entity.getPass());
+            statement.setString(counter++, entity.getToken());
+            statement.setBoolean(counter, entity.isAdmin());
 
             statement.execute();
         } catch (SQLException e) {

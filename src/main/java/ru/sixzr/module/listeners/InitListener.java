@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.FileSystemManager;
 import ru.sixzr.module.managers.SecurityManager;
+import ru.sixzr.module.managers.TokenManager;
 import ru.sixzr.module.repositories.ProductRepository;
 import ru.sixzr.module.repositories.ProductRepositoryJdbcImpl;
 import ru.sixzr.module.repositories.UserRepository;
@@ -42,7 +43,8 @@ public class InitListener implements ServletContextListener {
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
         FileSystemManager fileSystemManager = new FileSystemManager();
         SecurityManager securityManager = new SecurityManager();
-        Validator validator = new Validator(userRepository, fileSystemManager);
+        TokenManager tokenManager = new TokenManager();
+        Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
 
         servletContext.setAttribute("userRepository", userRepository);
         servletContext.setAttribute("productRepository", productRepository);

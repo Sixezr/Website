@@ -9,6 +9,8 @@ public class UserModel {
     private String email;
     private String pass;
     private String phoneNumber;
+    private String token;
+    private boolean isAdmin;
 
     public UserModel(String name, String secondName, String email, String pass, String phoneNumber) {
         this.name = name;
@@ -16,6 +18,7 @@ public class UserModel {
         this.email = email;
         this.pass = pass;
         this.phoneNumber = phoneNumber;
+        this.isAdmin = false;
     }
 
     public UserModel(int id, String name, String secondName, String email, String pass, String phoneNumber) {
@@ -69,6 +72,22 @@ public class UserModel {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @Override

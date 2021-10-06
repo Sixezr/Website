@@ -4,6 +4,7 @@ import ru.sixzr.module.exceptions.FileSystemManagerException;
 import ru.sixzr.module.entities.ProductModel;
 import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.managers.FileSystemManager;
+import ru.sixzr.module.managers.TokenManager;
 import ru.sixzr.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,12 @@ public class Validator {
     private static final String OK = "ok";
     private final UserRepository userRepository;
     private final FileSystemManager fileSystemManager;
+    private final TokenManager tokenManager;
 
-    public Validator(UserRepository userRepository, FileSystemManager fileSystemManager) {
+    public Validator(UserRepository userRepository, FileSystemManager fileSystemManager, TokenManager tokenManager) {
         this.userRepository = userRepository;
         this.fileSystemManager = fileSystemManager;
+        this.tokenManager = tokenManager;
     }
 
     public ProductModel validateAddingForm(HttpServletRequest req) {
@@ -189,7 +192,9 @@ public class Validator {
             req.setAttribute(ERROR, "Данный email уже ипользуется");
             return null;
         }
-        return new UserModel(name, secondName, email, pass, phoneNumber.replaceAll("\\p{Punct}", ""));
+        UserModel user = new UserModel(name, secondName, email, pass, phoneNumber.replaceAll("\\p{Punct}", ""));
+        user.setToken(tokenManager.generateToken());
+        return user;
     }
 
     private boolean isValidName(String name) {
