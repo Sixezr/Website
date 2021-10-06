@@ -12,6 +12,7 @@ import java.util.Optional;
 public class Validator {
 
     private static final String ERROR = "error";
+    private static final String OK = "ok";
     private UserRepository userRepository;
     private FileSystemManager fileSystemManager;
 
@@ -79,6 +80,11 @@ public class Validator {
         phoneNumber = phoneNumber.trim();
         pass = pass.trim();
 
+        if (user.getName().equals(name) && user.getSecondName().equals(secondName)
+                && user.getPhoneNumber().equals(phoneNumber) && user.getPass().equals(pass)) {
+            req.setAttribute(ERROR, "Нечего изменить");
+            return null;
+        }
         if (!isValidName(name)) {
             req.setAttribute(ERROR, "Имя должно содержать только буквы, а размер не более 12 и не менее 2");
             return null;
@@ -100,7 +106,7 @@ public class Validator {
         user.setSecondName(secondName);
         user.setPhoneNumber(phoneNumber);
         user.setPass(pass);
-        req.setAttribute("ok","Ваши данные изменены");
+        req.setAttribute(OK,"Ваши данные изменены");
         return user;
     }
 
