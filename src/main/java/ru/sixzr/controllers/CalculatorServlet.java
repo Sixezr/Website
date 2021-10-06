@@ -15,7 +15,7 @@ public class CalculatorServlet extends HttpServlet {
     private final String FIRST_PARAMETER = "first";
     private final String SECOND_PARAMETER = "second";
 
-    private Calculator calculator = new Calculator();
+    private final Calculator calculator = new Calculator();
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String first = req.getParameter(FIRST_PARAMETER);

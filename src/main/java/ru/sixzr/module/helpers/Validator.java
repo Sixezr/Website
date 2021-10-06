@@ -13,8 +13,8 @@ public class Validator {
 
     private static final String ERROR = "error";
     private static final String OK = "ok";
-    private UserRepository userRepository;
-    private FileSystemManager fileSystemManager;
+    private final UserRepository userRepository;
+    private final FileSystemManager fileSystemManager;
 
     public Validator(UserRepository userRepository, FileSystemManager fileSystemManager) {
         this.userRepository = userRepository;

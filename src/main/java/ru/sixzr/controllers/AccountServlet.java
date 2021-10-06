@@ -3,7 +3,6 @@ package ru.sixzr.controllers;
 import ru.sixzr.module.entities.UserModel;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.SessionManager;
-import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;

@@ -1,8 +1,6 @@
 package ru.sixzr.module.repositories;
 
 import ru.sixzr.module.entities.UserModel;
-import ru.sixzr.module.repositories.UserRepository;
-
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,7 +29,7 @@ public class UserRepositoryJdbcImp implements UserRepository {
     //language=SQL
     private static final String SQL_UPDATE_USER = "update \"user\" set name = ?, second_name = ?, phone = ?, pass = ? where id = ?";
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private final Function<ResultSet, UserModel> accountRowMapper = row -> {
         try {
@@ -42,8 +40,7 @@ public class UserRepositoryJdbcImp implements UserRepository {
             String pass = row.getString("pass");
             String phone = row.getString("phone");
 
-            UserModel account = new UserModel(id, firstName, lastName, email, pass, phone);
-            return account;
+            return new UserModel(id, firstName, lastName, email, pass, phone);
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }

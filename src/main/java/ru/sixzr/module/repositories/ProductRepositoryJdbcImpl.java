@@ -26,7 +26,7 @@ public class ProductRepositoryJdbcImpl implements ProductRepository {
     //language=SQL
     private static final String SQL_INSERT  = "INSERT INTO product(name, price, image) VALUES(?,?,?)";
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private final Function<ResultSet, ProductModel> accountRowMapper = row -> {
         try {
@@ -35,8 +35,7 @@ public class ProductRepositoryJdbcImpl implements ProductRepository {
             double price = row.getDouble("price");
             String image = row.getString("image");
 
-            ProductModel product = new ProductModel(id, name, price, image);
-            return product;
+            return new ProductModel(id, name, price, image);
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }
