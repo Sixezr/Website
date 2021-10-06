@@ -15,12 +15,9 @@ public class Validator {
     private UserRepository userRepository;
     private FileSystemManager fileSystemManager;
 
-    public Validator(UserRepository userRepository) {
+    public Validator(UserRepository userRepository, FileSystemManager fileSystemManager) {
         this.userRepository = userRepository;
-    }
-
-    public Validator() {
-        this.fileSystemManager = new FileSystemManager();
+        this.fileSystemManager = fileSystemManager;
     }
 
     public ProductModel validateAddingForm(HttpServletRequest req) {
@@ -55,6 +52,45 @@ public class Validator {
         }
 
         return new ProductModel(name, price, photo);
+    }
+
+    public  UserModel validateChangingDataForm(HttpServletRequest req, UserModel user) {
+        String name = req.getParameter("name");
+        String secondName = req.getParameter("second-name");
+        String phoneNumber = req.getParameter("phone-number");
+
+        if (name == null) {
+            req.setAttribute(ERROR, "Имя не может быть пустым");
+            return null;
+        } else if (secondName == null) {
+            req.setAttribute(ERROR, "Фамилия не может быть пустым");
+            return null;
+        } else if (phoneNumber == null) {
+            req.setAttribute(ERROR, "Номер телефона не может быть пустым");
+            return null;
+        }
+
+        name = name.trim();
+        secondName = secondName.trim();
+        phoneNumber = phoneNumber.trim();
+
+        if (!isValidName(name)) {
+            req.setAttribute(ERROR, "Имя должно содержать только буквы, а размер не более 12 и не менее 2");
+            return null;
+        }
+        if (!isValidName(secondName)) {
+            req.setAttribute(ERROR, "Фамилия должна содержать только буквы, а размер не более 12 и не менее 2");
+            return null;
+        }
+        if (!isValidPhoneNumber(phoneNumber)) {
+            req.setAttribute(ERROR, "Неверный формат номера телефона");
+            return null;
+        }
+
+        user.setName(name);
+        user.setSecondName(secondName);
+        user.setPhoneNumber(phoneNumber);
+        return user;
     }
 
     public UserModel validateSignInForm(HttpServletRequest req) {
@@ -139,14 +175,14 @@ public class Validator {
         return new UserModel(name, secondName, email, pass, phoneNumber.replaceAll("\\p{Punct}", ""));
     }
 
-    private static boolean isValidName(String name) {
+    private boolean isValidName(String name) {
         if (name.length() < 2 || name.length() > 12) {
             return false;
         }
         return name.matches("^[A-Za-zа-яА-Я]+$");
     }
 
-    private static boolean isValidPhoneNumber(String phone) {
+    private boolean isValidPhoneNumber(String phone) {
         String newPhone = phone.replaceAll("\\p{Punct}", "");
         if (newPhone.length() != 11) {
             return false;

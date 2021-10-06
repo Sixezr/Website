@@ -42,7 +42,7 @@ public class InitListener implements ServletContextListener {
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
         FileSystemManager fileSystemManager = new FileSystemManager();
         SecurityManager securityManager = new SecurityManager();
-        Validator validator = new Validator(userRepository);
+        Validator validator = new Validator(userRepository, fileSystemManager);
 
         servletContext.setAttribute("userRepository", userRepository);
         servletContext.setAttribute("productRepository", productRepository);

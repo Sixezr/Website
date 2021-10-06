@@ -33,11 +33,12 @@ public class AccountServlet extends HttpServlet {
         if (action != null) {
             switch (action) {
                 case "change":
-                    System.out.println(action);
-                    break;
+                    resp.sendRedirect(context.getContextPath()+"/account/change");
+                    return;
                 case "quit":
                     SessionManager.signOut(req);
-                    break;
+                    resp.sendRedirect(context.getContextPath()+"/account");
+                    return;
             }
         }
         if (SessionManager.isSigned(req)) {
