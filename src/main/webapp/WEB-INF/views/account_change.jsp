@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <input type="email" class="form-control" placeholder="Email" value="${user.getEmail()}" disabled>
+            <input type="password" name="pass" class="form-control" placeholder="Password" value="${user.getPass()}">
         </div>
         <div class="col">
             <input type="text" name="phone-number" class="form-control" placeholder="Номер телефона" value="${user.getPhoneNumber()}">
@@ -24,6 +24,9 @@
     <div class="d-grid gap-2">
         <c:if test="${error != null}">
             <div id="error">${error}</div>
+        </c:if>
+        <c:if test="${ok != null}">
+            <div id="ok">${ok}</div>
         </c:if>
         <button type="submit" class="btn btn-primary btn-success" name="action" value="save">Сохранить</button>
         <button type="submit" class="btn btn-primary btn-dark"  name="action" value="cancel">Отмена</button>

@@ -49,7 +49,9 @@ public class ChangeDataServlet extends HttpServlet {
             switch (action) {
                 case "save":
                     UserModel user = validator.validateChangingDataForm(req, (UserModel) req.getSession().getAttribute("user"));
-                    //todo добавь сохранение в бд
+                    if (user != null) {
+                        repositoryJdbc.update(user);
+                    }
                     context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
                     break;
                 case "cancel":

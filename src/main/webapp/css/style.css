@@ -73,3 +73,8 @@ p::first-letter {
   padding-bottom: 10px;
   color: red;
 }
+
+#ok {
+  padding-bottom: 10px;
+  color: green;
+}

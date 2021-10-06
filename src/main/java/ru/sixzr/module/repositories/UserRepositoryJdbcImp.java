@@ -28,6 +28,9 @@ public class UserRepositoryJdbcImp implements UserRepository {
     //language=SQL
     private static final String SQL_FIND_ALL = "SELECT * FROM \"user\"";
 
+    //language=SQL
+    private static final String SQL_UPDATE_USER = "update \"user\" set name = ?, second_name = ?, phone = ?, pass = ? where id = ?";
+
     private DataSource dataSource;
 
     private final Function<ResultSet, UserModel> accountRowMapper = row -> {
@@ -115,6 +118,17 @@ public class UserRepositoryJdbcImp implements UserRepository {
 
 
     public void update(UserModel entity) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_USER)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getSecondName());
+            statement.setString(3, entity.getPhoneNumber());
+            statement.setString(4, entity.getPass());
+            statement.setInt(5, entity.getId());
 
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

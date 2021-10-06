@@ -58,6 +58,7 @@ public class Validator {
         String name = req.getParameter("name");
         String secondName = req.getParameter("second-name");
         String phoneNumber = req.getParameter("phone-number");
+        String pass = req.getParameter("pass");
 
         if (name == null) {
             req.setAttribute(ERROR, "Имя не может быть пустым");
@@ -68,11 +69,15 @@ public class Validator {
         } else if (phoneNumber == null) {
             req.setAttribute(ERROR, "Номер телефона не может быть пустым");
             return null;
+        } else if (pass == null) {
+            req.setAttribute(ERROR, "Password не может быть пустым");
+            return null;
         }
 
         name = name.trim();
         secondName = secondName.trim();
         phoneNumber = phoneNumber.trim();
+        pass = pass.trim();
 
         if (!isValidName(name)) {
             req.setAttribute(ERROR, "Имя должно содержать только буквы, а размер не более 12 и не менее 2");
@@ -86,10 +91,16 @@ public class Validator {
             req.setAttribute(ERROR, "Неверный формат номера телефона");
             return null;
         }
+        if (pass.length() < 8) {
+            req.setAttribute(ERROR, "Минимальная длина пароля - 8 символов");
+            return null;
+        }
 
         user.setName(name);
         user.setSecondName(secondName);
         user.setPhoneNumber(phoneNumber);
+        user.setPass(pass);
+        req.setAttribute("ok","Ваши данные изменены");
         return user;
     }
 
