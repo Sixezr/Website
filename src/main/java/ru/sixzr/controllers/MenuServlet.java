@@ -1,5 +1,6 @@
 package ru.sixzr.controllers;
 
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.managers.FileSystemManager;
 import ru.sixzr.module.repositories.ProductRepository;
 import ru.sixzr.module.repositories.ProductRepositoryJdbcImpl;
@@ -23,8 +24,8 @@ public class MenuServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute("productRepository");
-        fileSystemManager = (FileSystemManager) context.getAttribute("fileSystemManager");
+        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.productRepository);
+        fileSystemManager = (FileSystemManager) context.getAttribute(Constants.fileSystemManager);
     }
 
     @Override

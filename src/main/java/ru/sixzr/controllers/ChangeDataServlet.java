@@ -1,6 +1,7 @@
 package ru.sixzr.controllers;
 
 import ru.sixzr.module.entities.UserModel;
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.SessionManager;
 import ru.sixzr.module.repositories.UserRepository;
@@ -21,41 +22,43 @@ public class ChangeDataServlet extends HttpServlet {
     private ServletContext context;
     private Validator validator;
     private UserRepository repositoryJdbc;
+    private SessionManager sessionManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        validator = (Validator) context.getAttribute("validator");
-        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute("userRepository");
+        validator = (Validator) context.getAttribute(Constants.validator);
+        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.userRepository);
+        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (SessionManager.isSigned(req)) {
+        if (sessionManager.isAuthenticated(req)) {
             context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
         } else {
-            resp.sendRedirect(context.getContextPath()+"/account");
+            resp.sendRedirect(context.getContextPath()+"/login");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!SessionManager.isSigned(req)) {
-            resp.sendRedirect(context.getContextPath()+"/account");
-        }
         req.setCharacterEncoding("UTF-8");
+        if (!sessionManager.isAuthenticated(req)) {
+            resp.sendRedirect(context.getContextPath()+"/login");
+        }
         String action = req.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "save":
-                    UserModel user = validator.validateChangingDataForm(req, (UserModel) req.getSession().getAttribute("user"));
+                    UserModel user = validator.validateChangingDataForm(req, sessionManager.getUser(req));
                     if (user != null) {
                         repositoryJdbc.update(user);
                     }
                     context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
                     break;
                 case "cancel":
-                    resp.sendRedirect(context.getContextPath()+"/account");
+                    resp.sendRedirect(context.getContextPath()+"/login");
                     break;
             }
         }

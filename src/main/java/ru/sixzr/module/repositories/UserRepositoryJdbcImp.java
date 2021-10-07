@@ -24,6 +24,9 @@ public class UserRepositoryJdbcImp implements UserRepository {
     private static final String SQL_FIND_BY_EMAIL = "SELECT * FROM  \"user\" WHERE email = ?";
 
     //language=SQL
+    private static final String SQL_FIND_BY_TOKEN = "SELECT * FROM  \"user\" WHERE token = ?";
+
+    //language=SQL
     private static final String SQL_FIND_ALL = "SELECT * FROM \"user\"";
 
     //language=SQL
@@ -91,6 +94,23 @@ public class UserRepositoryJdbcImp implements UserRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(SQL_FIND_BY_EMAIL)) {
             statement.setString(1, email);
+
+            ResultSet row = statement.executeQuery();
+            if (row.next()) {
+                return Optional.of(accountRowMapper.apply(row));
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public Optional<UserModel> findByToken(String token) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(SQL_FIND_BY_EMAIL)) {
+            statement.setString(1, token);
 
             ResultSet row = statement.executeQuery();
             if (row.next()) {

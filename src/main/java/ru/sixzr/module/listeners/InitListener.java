@@ -2,9 +2,10 @@ package ru.sixzr.module.listeners;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.FileSystemManager;
-import ru.sixzr.module.managers.SecurityManager;
+import ru.sixzr.module.managers.SessionManager;
 import ru.sixzr.module.managers.TokenManager;
 import ru.sixzr.module.repositories.ProductRepository;
 import ru.sixzr.module.repositories.ProductRepositoryJdbcImpl;
@@ -42,15 +43,15 @@ public class InitListener implements ServletContextListener {
         UserRepository userRepository = new UserRepositoryJdbcImp(dataSource);
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
         FileSystemManager fileSystemManager = new FileSystemManager();
-        SecurityManager securityManager = new SecurityManager();
+        SessionManager securityManager = new SessionManager(userRepository);
         TokenManager tokenManager = new TokenManager();
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
 
-        servletContext.setAttribute("userRepository", userRepository);
-        servletContext.setAttribute("productRepository", productRepository);
-        servletContext.setAttribute("fileSystemManager", fileSystemManager);
-        servletContext.setAttribute("securityManager", securityManager);
-        servletContext.setAttribute("validator", validator);
+        servletContext.setAttribute(Constants.userRepository, userRepository);
+        servletContext.setAttribute(Constants.productRepository, productRepository);
+        servletContext.setAttribute(Constants.fileSystemManager, fileSystemManager);
+        servletContext.setAttribute(Constants.sessionManager, securityManager);
+        servletContext.setAttribute(Constants.validator, validator);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ru.sixzr.controllers;
 
 import ru.sixzr.module.entities.UserModel;
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.SessionManager;
 import ru.sixzr.module.repositories.UserRepository;
@@ -21,12 +22,14 @@ public class RegisterServlet extends HttpServlet {
     private ServletContext context;
     private UserRepository repositoryJdbc;
     private Validator validator;
+    private SessionManager sessionManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute("userRepository");
-        validator = (Validator) context.getAttribute("validator");
+        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.userRepository);
+        validator = (Validator) context.getAttribute(Constants.validator);
+        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class RegisterServlet extends HttpServlet {
         UserModel user = validator.validateRegisterForm(req);
         if (user != null) {
             repositoryJdbc.save(user);
-            SessionManager.signIn(req, repositoryJdbc.findByEmail(user.getEmail()).get());
+            sessionManager.signIn(req, repositoryJdbc.findByEmail(user.getEmail()).get());
             resp.sendRedirect(context.getContextPath() + "/account");
         } else {
             context.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);

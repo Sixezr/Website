@@ -1,6 +1,6 @@
 package ru.sixzr.controllers;
 
-import ru.sixzr.module.entities.UserModel;
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.helpers.Validator;
 import ru.sixzr.module.managers.SessionManager;
 
@@ -18,11 +18,12 @@ public class AccountServlet extends HttpServlet {
 
     private Validator validator;
     private ServletContext context;
+    private SessionManager sessionManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        validator = (Validator) context.getAttribute("validator");
+        validator = (Validator) context.getAttribute(Constants.validator);
     }
 
     @Override
@@ -35,27 +36,11 @@ public class AccountServlet extends HttpServlet {
                     resp.sendRedirect(context.getContextPath()+"/account/change");
                     return;
                 case "quit":
-                    SessionManager.signOut(req);
-                    resp.sendRedirect(context.getContextPath()+"/account");
+                    sessionManager.signOut(req);
+                    resp.sendRedirect(context.getContextPath()+"/login");
                     return;
             }
         }
-        if (SessionManager.isSigned(req)) {
-            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
-        } else {
-            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        UserModel user = validator.validateSignInForm(req);
-        if (user == null) {
-            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
-        } else {
-            SessionManager.signIn(req, user);
-            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
-        }
+        context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
     }
 }

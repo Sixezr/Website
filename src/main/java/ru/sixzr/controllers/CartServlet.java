@@ -1,5 +1,6 @@
 package ru.sixzr.controllers;
 
+import ru.sixzr.module.helpers.Constants;
 import ru.sixzr.module.repositories.UserRepositoryJdbcImp;
 import ru.sixzr.module.repositories.UserRepository;
 
@@ -21,7 +22,7 @@ public class CartServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        userRepository = (UserRepositoryJdbcImp) context.getAttribute("userRepository");
+        userRepository = (UserRepositoryJdbcImp) context.getAttribute(Constants.userRepository);
     }
 
     @Override
