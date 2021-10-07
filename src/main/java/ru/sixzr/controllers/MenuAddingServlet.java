@@ -47,10 +47,12 @@ public class MenuAddingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        ProductModel productModel = validator.validateAddingForm(req);
-        if (productModel != null) {
-            productRepository.save(productModel);
+        if (securityManager.isAdmin(req)) {
+            ProductModel productModel = validator.validateAddingForm(req);
+            if (productModel != null) {
+                productRepository.save(productModel);
+            }
+            context.getRequestDispatcher("/WEB-INF/views/adding.jsp").forward(req, resp);
         }
-        context.getRequestDispatcher("/WEB-INF/views/adding.jsp").forward(req, resp);
     }
 }

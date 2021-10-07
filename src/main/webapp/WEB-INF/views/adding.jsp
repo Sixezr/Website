@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var = "title" value = "Добавить"/>
 <c:set var = "form_width" value = "45"/>
@@ -18,6 +18,9 @@
         <input class="form-control" id="formFileMultiple" type="file" name="photo" accept="image/*,image/jpeg" required>
         <c:if test="${error != null}">
             <div id="error">${error}</div>
+        </c:if>
+        <c:if test="${ok != null}">
+            <div id="ok">${ok}</div>
         </c:if>
         <input type="submit" value="Добавить">
     </div>

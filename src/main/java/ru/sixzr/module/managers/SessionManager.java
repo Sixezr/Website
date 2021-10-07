@@ -26,9 +26,10 @@ public class SessionManager {
     }
 
     public boolean isAuthenticated(HttpServletRequest req) {
-        if(req.getSession().getAttribute("user") != null){
-            return true;
-        }
+        return req.getSession().getAttribute("user") != null;
+    }
+
+    public boolean authenticate(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         if(cookies != null){
             for (Cookie c : cookies){

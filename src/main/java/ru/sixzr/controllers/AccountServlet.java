@@ -24,6 +24,7 @@ public class AccountServlet extends HttpServlet {
     public void init(ServletConfig config) {
         context = config.getServletContext();
         validator = (Validator) context.getAttribute(Constants.validator);
+        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
     }
 
     @Override

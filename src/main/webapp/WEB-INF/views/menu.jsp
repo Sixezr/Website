@@ -1,13 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var = "title" value = "Меню"/>
 <%@include file="/WEB-INF/views/components/_header.jsp"%>
 
 <div class="album py-5">
   <div class="container">
-    <form action="<c:url value = "/menu/add"/>">
-      <button type="submit" class="btn btn-secondary">Добавить товар</button>
-    </form>
+    <c:if test="${user.isAdmin()}">
+      <form action="<c:url value = "/menu/add"/>">
+        <button type="submit" class="btn btn-secondary">Добавить товар</button>
+      </form>
+    </c:if>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
       <c:forEach items="${products}" var="product">
@@ -19,7 +21,9 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
+                  <c:if test="${user.isAdmin()}">
                   <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                  </c:if>
                 </div>
                 <small class="text-muted">${product.getPrice()} р</small>
               </div>

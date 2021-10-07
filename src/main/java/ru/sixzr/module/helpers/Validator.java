@@ -55,6 +55,7 @@ public class Validator {
             return null;
         }
 
+        req.setAttribute(OK, "Товар добавлен");
         return new ProductModel(name, price, photo);
     }
 

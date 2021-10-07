@@ -26,7 +26,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse)servletResponse;
 
-        if (!sessionManager.isAuthenticated(request)) {
+        if (!sessionManager.isAuthenticated(request) && !sessionManager.authenticate(request)) {
             response.sendRedirect(context.getContextPath()+"/login");
             return;
         }
