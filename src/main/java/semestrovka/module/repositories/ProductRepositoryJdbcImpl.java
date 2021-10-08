@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class ProductRepositoryJdbcImpl implements ProductRepository {
+public final class ProductRepositoryJdbcImpl implements ProductRepository {
 
     //language=SQL
     private static final String SQL_FIND_ALL = "SELECT * FROM product";

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public class SessionManager implements ISessionManager {
+public final class SessionManager implements ISessionManager {
 
     private final UserRepository userRepository;
     private final ITokenManager tokenManager;

@@ -9,7 +9,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.file.Files;
 
-public class FileSystemManager extends AbstractFileSystemManager {
+public final class FileSystemManager extends AbstractFileSystemManager {
 
     public FileSystemManager() {
        super();

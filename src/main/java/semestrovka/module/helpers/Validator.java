@@ -7,25 +7,16 @@ import semestrovka.module.managers.*;
 import semestrovka.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
-public class Validator {
-
-    private static final String ERROR = "error";
-    private static final String OK = "ok";
-    private final UserRepository userRepository;
-    private final AbstractFileSystemManager fileSystemManager;
-    private final ITokenManager tokenManager;
+public class Validator extends AbstractValidator{
 
     public Validator(UserRepository userRepository, AbstractFileSystemManager fileSystemManager, ITokenManager tokenManager) {
-        this.userRepository = userRepository;
-        this.fileSystemManager = fileSystemManager;
-        this.tokenManager = tokenManager;
+        super(userRepository, fileSystemManager, tokenManager);
     }
 
     public ProductModel validateAddingForm(HttpServletRequest req) {
-        String name = req.getParameter("name");
-        String stringPrice = req.getParameter("price");
+        String name = req.getParameter(NAME_PARAMETR);
+        String stringPrice = req.getParameter(PRICE_PARAMETR);
 
         if (name == null) {
             req.setAttribute(ERROR, "Название не может быть пустым");
@@ -58,11 +49,11 @@ public class Validator {
         return new ProductModel(name, price, photo);
     }
 
-    public  UserModel validateChangingDataForm(HttpServletRequest req, UserModel user) {
-        String name = req.getParameter("name");
-        String secondName = req.getParameter("second-name");
-        String phoneNumber = req.getParameter("phone-number");
-        String pass = req.getParameter("pass");
+    public UserModel validateChangingDataForm(HttpServletRequest req, UserModel user) {
+        String name = req.getParameter(NAME_PARAMETR);
+        String secondName = req.getParameter(SECOND_NAME_PARAMETR);
+        String phoneNumber = req.getParameter(PHONE_PARAMETR);
+        String pass = req.getParameter(PASS_PARAMETR);
 
         if (name == null) {
             req.setAttribute(ERROR, "Имя не может быть пустым");
@@ -114,8 +105,8 @@ public class Validator {
     }
 
     public UserModel validateSignInForm(HttpServletRequest req) {
-        String email = req.getParameter("email");
-        String pass = req.getParameter("pass");
+        String email = req.getParameter(EMAIL_PARAMETR);
+        String pass = req.getParameter(PASS_PARAMETR);
 
         req.setAttribute("repeated_email", email);
         if (email == null) {
@@ -129,6 +120,11 @@ public class Validator {
         email = email.trim();
         pass = pass.trim();
 
+        if (!isEmailValid(email)) {
+            req.setAttribute(ERROR, "Неверный формат email");
+            return null;
+        }
+
         UserModel user = isRightData(email, pass);
         if (user == null) {
             req.setAttribute(ERROR, "Неверный пароль или email");
@@ -138,11 +134,11 @@ public class Validator {
     }
 
     public UserModel validateRegisterForm(HttpServletRequest req) {
-        String name = req.getParameter("name");
-        String secondName = req.getParameter("second-name");
-        String phoneNumber = req.getParameter("phone-number");
-        String email = req.getParameter("email");
-        String pass = req.getParameter("pass");
+        String name = req.getParameter(NAME_PARAMETR);
+        String secondName = req.getParameter(SECOND_NAME_PARAMETR);
+        String phoneNumber = req.getParameter(PHONE_PARAMETR);
+        String email = req.getParameter(EMAIL_PARAMETR);
+        String pass = req.getParameter(PASS_PARAMETR);
 
         req.setAttribute("repeated_name", name);
         req.setAttribute("repeated_s_name", secondName);
@@ -168,7 +164,7 @@ public class Validator {
 
         name = name.trim();
         secondName = secondName.trim();
-        phoneNumber = phoneNumber.trim();
+        phoneNumber = phoneNumber.trim().replaceAll("\\p{Punct}", "");
         email = email.trim();
         pass = pass.trim();
 
@@ -192,39 +188,13 @@ public class Validator {
             req.setAttribute(ERROR, "Данный email уже ипользуется");
             return null;
         }
-        UserModel user = new UserModel(name, secondName, email, pass, phoneNumber.replaceAll("\\p{Punct}", ""));
-        user.setToken(tokenManager.generateToken());
-        return user;
-    }
-
-    private boolean isValidName(String name) {
-        if (name.length() < 2 || name.length() > 12) {
-            return false;
-        }
-        return name.matches("^[A-Za-zа-яА-Я]+$");
-    }
-
-    private boolean isValidPhoneNumber(String phone) {
-        String newPhone = phone.replaceAll("\\p{Punct}", "");
-        if (newPhone.length() != 11) {
-            return false;
-        }
-        return newPhone.matches("^\\p{Digit}+$");
-    }
-
-    private boolean isEmailUnvailable(String email) {
-        return userRepository.findByEmail(email).isPresent();
-    }
-
-    private UserModel isRightData(String email, String pass) {
-        Optional<UserModel> optionalUser = userRepository.findByEmail(email);
-        if (!optionalUser.isPresent()) {
+        if (!isEmailValid(email)) {
+            req.setAttribute(ERROR, "Неверный формат email");
             return null;
         }
-        UserModel user = optionalUser.get();
-        if (user.getEmail().equals(email) && user.getPass().equals(pass)) {
-            return user;
-        }
-        return null;
+
+        UserModel user = new UserModel(name, secondName, email, pass, phoneNumber);
+        user.setToken(tokenManager.generateToken());
+        return user;
     }
 }

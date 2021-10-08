@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class UserRepositoryJdbcImp implements UserRepository {
+public final class UserRepositoryJdbcImp implements UserRepository {
 
     //language=SQL
     private static final String SQL_INSERT_USER = "INSERT INTO \"user\"(name, second_name, phone, email, pass, token, is_admin) VALUES(?,?,?,?,?,?,?)";
