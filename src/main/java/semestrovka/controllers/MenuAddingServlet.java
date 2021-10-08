@@ -3,6 +3,7 @@ package semestrovka.controllers;
 import semestrovka.module.entities.ProductModel;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
+import semestrovka.module.managers.ISessionManager;
 import semestrovka.module.managers.SessionManager;
 import semestrovka.module.repositories.ProductRepository;
 import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
@@ -23,16 +24,16 @@ import java.io.IOException;
 public class MenuAddingServlet extends HttpServlet {
 
     private ServletContext context;
-    private SessionManager securityManager;
+    private ISessionManager securityManager;
     private Validator validator;
     private ProductRepository productRepository;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.productRepository);
-        securityManager = (SessionManager) context.getAttribute(Constants.sessionManager);
-        validator = (Validator) context.getAttribute(Constants.validator);
+        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
+        securityManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
     }
 
     @Override

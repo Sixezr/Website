@@ -12,9 +12,9 @@ import java.util.Optional;
 public class SessionManager implements ISessionManager {
 
     private final UserRepository userRepository;
-    private final TokenManager tokenManager;
+    private final ITokenManager tokenManager;
 
-    public SessionManager(UserRepository userRepository, TokenManager tokenManager) {
+    public SessionManager(UserRepository userRepository, ITokenManager tokenManager) {
         this.userRepository = userRepository;
         this.tokenManager = tokenManager;
     }
@@ -48,7 +48,7 @@ public class SessionManager implements ISessionManager {
     }
 
     public UserModel getUser(HttpServletRequest req) {
-        return  (UserModel) req.getSession().getAttribute(Constants.user);
+        return  (UserModel) req.getSession().getAttribute(Constants.USER);
     }
 
     public void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user) {

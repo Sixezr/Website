@@ -4,9 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.FileSystemManager;
-import semestrovka.module.managers.SessionManager;
-import semestrovka.module.managers.TokenManager;
+import semestrovka.module.managers.*;
 import semestrovka.module.repositories.ProductRepository;
 import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
 import semestrovka.module.repositories.UserRepository;
@@ -42,16 +40,16 @@ public class InitListener implements ServletContextListener {
 
         UserRepository userRepository = new UserRepositoryJdbcImp(dataSource);
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
-        FileSystemManager fileSystemManager = new FileSystemManager();
-        TokenManager tokenManager = new TokenManager();
-        SessionManager securityManager = new SessionManager(userRepository, tokenManager);
+        AbstractFileSystemManager fileSystemManager = new FileSystemManager();
+        ITokenManager tokenManager = new TokenManager();
+        ISessionManager securityManager = new SessionManager(userRepository, tokenManager);
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
 
-        servletContext.setAttribute(Constants.userRepository, userRepository);
-        servletContext.setAttribute(Constants.productRepository, productRepository);
-        servletContext.setAttribute(Constants.fileSystemManager, fileSystemManager);
-        servletContext.setAttribute(Constants.sessionManager, securityManager);
-        servletContext.setAttribute(Constants.validator, validator);
+        servletContext.setAttribute(Constants.USER_REPOSITORY, userRepository);
+        servletContext.setAttribute(Constants.PRODUCT_REPOSITORY, productRepository);
+        servletContext.setAttribute(Constants.FILE_SYSTEM_MANAGER, fileSystemManager);
+        servletContext.setAttribute(Constants.SESSION_MANAGER, securityManager);
+        servletContext.setAttribute(Constants.VALIDATOR, validator);
     }
 
     @Override

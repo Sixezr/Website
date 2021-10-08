@@ -22,7 +22,7 @@ public class CartServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        userRepository = (UserRepositoryJdbcImp) context.getAttribute(Constants.userRepository);
+        userRepository = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
     }
 
     @Override

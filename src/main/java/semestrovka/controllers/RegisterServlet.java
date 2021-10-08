@@ -3,6 +3,7 @@ package semestrovka.controllers;
 import semestrovka.module.entities.UserModel;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
+import semestrovka.module.managers.ISessionManager;
 import semestrovka.module.managers.SessionManager;
 import semestrovka.module.repositories.UserRepository;
 import semestrovka.module.repositories.UserRepositoryJdbcImp;
@@ -22,14 +23,14 @@ public class RegisterServlet extends HttpServlet {
     private ServletContext context;
     private UserRepository repositoryJdbc;
     private Validator validator;
-    private SessionManager sessionManager;
+    private ISessionManager sessionManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.userRepository);
-        validator = (Validator) context.getAttribute(Constants.validator);
-        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
+        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
+        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
+        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
     }
 
     @Override

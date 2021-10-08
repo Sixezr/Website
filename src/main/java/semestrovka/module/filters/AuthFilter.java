@@ -1,6 +1,7 @@
 package semestrovka.module.filters;
 
 import semestrovka.module.helpers.Constants;
+import semestrovka.module.managers.ISessionManager;
 import semestrovka.module.managers.SessionManager;
 
 import javax.servlet.*;
@@ -13,12 +14,12 @@ import java.io.IOException;
 public class AuthFilter implements Filter {
 
     private ServletContext context;
-    private SessionManager sessionManager;
+    private ISessionManager sessionManager;
 
     @Override
     public void init(FilterConfig filterConfig) {
         context = filterConfig.getServletContext();
-        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
+        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
     }
 
     @Override

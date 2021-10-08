@@ -3,8 +3,7 @@ package semestrovka.module.helpers;
 import semestrovka.module.exceptions.FileSystemManagerException;
 import semestrovka.module.entities.ProductModel;
 import semestrovka.module.entities.UserModel;
-import semestrovka.module.managers.FileSystemManager;
-import semestrovka.module.managers.TokenManager;
+import semestrovka.module.managers.*;
 import semestrovka.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +14,10 @@ public class Validator {
     private static final String ERROR = "error";
     private static final String OK = "ok";
     private final UserRepository userRepository;
-    private final FileSystemManager fileSystemManager;
-    private final TokenManager tokenManager;
+    private final AbstractFileSystemManager fileSystemManager;
+    private final ITokenManager tokenManager;
 
-    public Validator(UserRepository userRepository, FileSystemManager fileSystemManager, TokenManager tokenManager) {
+    public Validator(UserRepository userRepository, AbstractFileSystemManager fileSystemManager, ITokenManager tokenManager) {
         this.userRepository = userRepository;
         this.fileSystemManager = fileSystemManager;
         this.tokenManager = tokenManager;

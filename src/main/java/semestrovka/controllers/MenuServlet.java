@@ -1,6 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
+import semestrovka.module.managers.AbstractFileSystemManager;
 import semestrovka.module.managers.FileSystemManager;
 import semestrovka.module.repositories.ProductRepository;
 import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
@@ -17,15 +18,15 @@ import java.io.IOException;
 @WebServlet("/menu")
 public class MenuServlet extends HttpServlet {
 
-    private ProductRepository productRepository;
-    private FileSystemManager fileSystemManager;
     private ServletContext context;
+    private ProductRepository productRepository;
+    private AbstractFileSystemManager fileSystemManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.productRepository);
-        fileSystemManager = (FileSystemManager) context.getAttribute(Constants.fileSystemManager);
+        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
+        fileSystemManager = (FileSystemManager) context.getAttribute(Constants.FILE_SYSTEM_MANAGER);
     }
 
     @Override

@@ -2,6 +2,7 @@ package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
+import semestrovka.module.managers.ISessionManager;
 import semestrovka.module.managers.SessionManager;
 
 import javax.servlet.ServletConfig;
@@ -16,15 +17,15 @@ import java.io.IOException;
 @WebServlet("/account")
 public class AccountServlet extends HttpServlet {
 
-    private Validator validator;
     private ServletContext context;
-    private SessionManager sessionManager;
+    private Validator validator;
+    private ISessionManager sessionManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        validator = (Validator) context.getAttribute(Constants.validator);
-        sessionManager = (SessionManager) context.getAttribute(Constants.sessionManager);
+        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
+        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
     }
 
     @Override
