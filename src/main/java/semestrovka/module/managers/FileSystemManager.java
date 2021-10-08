@@ -7,21 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.math.BigInteger;
 import java.nio.file.Files;
-import java.security.SecureRandom;
 
-public class FileSystemManager {
-
-    private static final String EXTENSION = ".jpeg";
-    private static final String PATH_TO_UPLOADS = ".."+File.separator+"uploads"+File.separator;
-    private static final String PATH_TO_WEB = ".."+File.separator+"webapps"+File.separator;
-    private static final String PATH_TO_IMG_IN_WEB = File.separator+"img"+File.separator+"products"+ File.separator;
-
-    private final SecureRandom random;
+public class FileSystemManager extends AbstractFileSystemManager {
 
     public FileSystemManager() {
-       random = new SecureRandom();
+       super();
     }
 
     public String downloadFile(HttpServletRequest req) throws FileSystemManagerException {
@@ -55,9 +46,5 @@ public class FileSystemManager {
                 e.printStackTrace();
             }
         }
-    }
-
-    private String generateRandomName() {
-        return new BigInteger(130, random).toString(32);
     }
 }

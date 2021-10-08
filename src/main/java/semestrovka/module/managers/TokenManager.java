@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
-public class TokenManager {
+public class TokenManager implements ITokenManager {
+
     public String generateToken() {
         return String.valueOf(UUID.randomUUID());
     }
