@@ -20,7 +20,9 @@
               <p>${product.getName()}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
+                  <form method="POST">
+                    <button type="submit" type="button" class="btn btn-sm btn-outline-secondary" name="product-id" value="${product.getId()}" >В корзину</button>
+                  </form>
                   <c:if test="${user.isAdmin()}">
                   <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
                   </c:if>

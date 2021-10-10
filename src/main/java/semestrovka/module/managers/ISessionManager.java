@@ -1,5 +1,6 @@
 package semestrovka.module.managers;
 
+import semestrovka.module.entities.CartModel;
 import semestrovka.module.entities.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ public interface ISessionManager {
     boolean isAuthenticated(HttpServletRequest req);
     boolean authenticate(HttpServletRequest req);
     UserModel getUser(HttpServletRequest req);
+    CartModel getCart(HttpServletRequest req);
     void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user);
     void signOut(HttpServletRequest req, HttpServletResponse resp);
 }

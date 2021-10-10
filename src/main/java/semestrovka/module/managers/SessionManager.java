@@ -1,7 +1,9 @@
 package semestrovka.module.managers;
 
+import semestrovka.module.entities.CartModel;
 import semestrovka.module.entities.UserModel;
 import semestrovka.module.helpers.Constants;
+import semestrovka.module.repositories.CartRepository;
 import semestrovka.module.repositories.UserRepository;
 
 import javax.servlet.http.Cookie;
@@ -13,10 +15,12 @@ public final class SessionManager implements ISessionManager {
 
     private final UserRepository userRepository;
     private final ITokenManager tokenManager;
+    private final CartRepository cartRepository;
 
-    public SessionManager(UserRepository userRepository, ITokenManager tokenManager) {
+    public SessionManager(UserRepository userRepository, ITokenManager tokenManager, CartRepository cartRepository) {
         this.userRepository = userRepository;
         this.tokenManager = tokenManager;
+        this.cartRepository = cartRepository;
     }
 
     public boolean isAdmin(HttpServletRequest req) {
@@ -38,7 +42,9 @@ public final class SessionManager implements ISessionManager {
                 if(c.getName().equals(Constants.TOKEN)){
                     Optional<UserModel> user = userRepository.findByToken(c.getValue());
                     if(user.isPresent()){
-                        req.getSession().setAttribute("user", user.get());
+                        CartModel cart = cartRepository.findCart(user.get().getId());
+                        req.getSession().setAttribute(Constants.USER, user.get());
+                        req.getSession().setAttribute(Constants.CART, cart);
                         return true;
                     }
                 }
@@ -51,13 +57,20 @@ public final class SessionManager implements ISessionManager {
         return  (UserModel) req.getSession().getAttribute(Constants.USER);
     }
 
+    @Override
+    public CartModel getCart(HttpServletRequest req) {
+        return (CartModel) req.getSession().getAttribute(Constants.CART);
+    }
+
     public void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user) {
-        req.getSession().setAttribute("user", user);
+        req.getSession().setAttribute(Constants.USER, user);
+        req.getSession().setAttribute(Constants.CART, new CartModel());
         tokenManager.saveToken(resp, user.getToken());
     }
 
     public void signOut(HttpServletRequest req, HttpServletResponse resp) {
-        req.getSession().removeAttribute("user");
+        req.getSession().removeAttribute(Constants.USER);
+        req.getSession().removeAttribute(Constants.CART);
         tokenManager.removeToken(req, resp);
     }
 }

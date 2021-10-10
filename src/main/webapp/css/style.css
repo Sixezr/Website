@@ -2,7 +2,7 @@ body {
   background-color: #eeeeee;
 }
 
-p::first-letter {
+p.first-red::first-letter {
   font-size: 1.5em;
   color: #E04E35;
 }

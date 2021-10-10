@@ -8,15 +8,20 @@ public class ProductModel {
     private double price;
     private String picture;
 
-    public ProductModel(int id, String name, double price, String picture) {
-        this(name, price, picture);
-        this.id = id;
-    }
-
     public ProductModel(String name, double price, String picture) {
         this.name = name;
         this.price = price;
         this.picture = picture;
+    }
+
+    public ProductModel(int id, String name, double price) {
+        this(name, price, null);
+        this.id = id;
+    }
+
+    public ProductModel(int id, String name, double price, String picture) {
+        this(name, price, picture);
+        this.id = id;
     }
 
     public int getId() {

@@ -5,10 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.*;
-import semestrovka.module.repositories.ProductRepository;
-import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
-import semestrovka.module.repositories.UserRepository;
-import semestrovka.module.repositories.UserRepositoryJdbcImp;
+import semestrovka.module.repositories.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -40,13 +37,15 @@ public class InitListener implements ServletContextListener {
 
         UserRepository userRepository = new UserRepositoryJdbcImp(dataSource);
         ProductRepository productRepository = new ProductRepositoryJdbcImpl(dataSource);
+        CartRepository cartRepository = new CartRepositoryJdbcImpl(dataSource);
         AbstractFileSystemManager fileSystemManager = new FileSystemManager();
         ITokenManager tokenManager = new TokenManager();
-        ISessionManager securityManager = new SessionManager(userRepository, tokenManager);
+        ISessionManager securityManager = new SessionManager(userRepository, tokenManager, cartRepository);
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
 
         servletContext.setAttribute(Constants.USER_REPOSITORY, userRepository);
         servletContext.setAttribute(Constants.PRODUCT_REPOSITORY, productRepository);
+        servletContext.setAttribute(Constants.CART_REPOSITORY, cartRepository);
         servletContext.setAttribute(Constants.FILE_SYSTEM_MANAGER, fileSystemManager);
         servletContext.setAttribute(Constants.SESSION_MANAGER, securityManager);
         servletContext.setAttribute(Constants.VALIDATOR, validator);

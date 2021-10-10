@@ -26,6 +26,7 @@ public final class TokenManager implements ITokenManager {
                 if(c.getName().equals(Constants.TOKEN)){
                     c.setMaxAge(0);
                     resp.addCookie(c);
+                    return;
                 }
             }
         }
