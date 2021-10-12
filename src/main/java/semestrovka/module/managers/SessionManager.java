@@ -64,7 +64,8 @@ public final class SessionManager implements ISessionManager {
 
     public void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user) {
         req.getSession().setAttribute(Constants.USER, user);
-        req.getSession().setAttribute(Constants.CART, new CartModel());
+        CartModel cartModel = cartRepository.findCart(user.getId());
+        req.getSession().setAttribute(Constants.CART, cartModel);
         tokenManager.saveToken(resp, user.getToken());
     }
 

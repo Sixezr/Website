@@ -7,6 +7,10 @@ p.first-red::first-letter {
   color: #E04E35;
 }
 
+.price:after {
+  content: "\20BD";
+}
+
 .album {
   background-color: #eeeeee;
 }

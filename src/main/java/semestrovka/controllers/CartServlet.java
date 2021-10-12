@@ -1,5 +1,6 @@
 package semestrovka.controllers;
 
+import semestrovka.module.entities.CartModel;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.repositories.CartRepository;
 import semestrovka.module.repositories.CartRepositoryJdbcImpl;
@@ -35,7 +36,7 @@ public class CartServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
     }
 }

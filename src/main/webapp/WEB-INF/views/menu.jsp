@@ -21,7 +21,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <form method="POST">
-                    <button type="submit" type="button" class="btn btn-sm btn-outline-secondary" name="product-id" value="${product.getId()}" >В корзину</button>
+                    <button type="submit" type="button" class="btn btn-sm btn-outline-secondary" name="product-id" value="${product.getId()}">В корзину</button>
                   </form>
                   <c:if test="${user.isAdmin()}">
                   <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
