@@ -1,6 +1,5 @@
 package semestrovka.controllers;
 
-import semestrovka.module.entities.CartModel;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.repositories.CartRepository;
 import semestrovka.module.repositories.CartRepositoryJdbcImpl;
