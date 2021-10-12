@@ -24,12 +24,12 @@ public final class FileSystemManager extends AbstractFileSystemManager {
             part = req.getPart("photo");
             inputStream = part.getInputStream();
         } catch (IOException | ServletException e) {
-            throw new FileSystemManagerException(e);
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
         }
         try {
             Files.copy(inputStream, file.toPath());
         } catch (IOException e) {
-            throw new FileSystemManagerException(e);
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
         }
         copyFilesToWeb(req.getContextPath());
         return file.getName();

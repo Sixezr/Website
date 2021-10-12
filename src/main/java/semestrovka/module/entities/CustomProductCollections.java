@@ -64,9 +64,8 @@ public class CustomProductCollections implements ICustomProductCollection<Produc
 
     @Override
     public boolean remove(Object o) {
-        ProductModel productModel = (ProductModel) o;
         for (int i = 0; i < size; i++) {
-            if (products.get(i).equals(productModel)) {
+            if (products.get(i).equals(o)) {
                 if (counterOfProducts.get(i) > 1) {
                     counterOfProducts.set(i, counterOfProducts.get(i) - 1);
                 } else {

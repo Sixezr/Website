@@ -1,6 +1,7 @@
 package semestrovka.module.helpers;
 
 import semestrovka.module.entities.UserModel;
+import semestrovka.module.exceptions.UncorrectDataException;
 import semestrovka.module.managers.AbstractFileSystemManager;
 import semestrovka.module.managers.ITokenManager;
 import semestrovka.module.repositories.UserRepository;
@@ -8,7 +9,6 @@ import semestrovka.module.repositories.UserRepository;
 import java.util.Optional;
 
 public abstract class AbstractValidator implements IValidator {
-    protected static final String ERROR = "error";
     protected static final String OK = "ok";
     protected static final String NAME_PARAMETR = "name";
     protected static final String SECOND_NAME_PARAMETR = "second-name";
@@ -50,13 +50,17 @@ public abstract class AbstractValidator implements IValidator {
     protected UserModel isRightData(String email, String pass) {
         Optional<UserModel> optionalUser = userRepository.findByEmail(email);
         if (!optionalUser.isPresent()) {
-            return null;
+            throw new UncorrectDataException("Неверный пароль или email");
         }
         UserModel user = optionalUser.get();
         if (user.getEmail().equals(email) && user.getPass().equals(pass)) {
             return user;
         }
-        return null;
+        throw new UncorrectDataException("Неверный пароль или email");
+    }
+
+    protected boolean isValidPass(String pass) {
+        return pass.length() >= 8;
     }
 
     protected boolean isEmailValid(String email) {

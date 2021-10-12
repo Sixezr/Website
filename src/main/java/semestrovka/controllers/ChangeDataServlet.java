@@ -1,6 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.entities.UserModel;
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.ISessionManager;
@@ -52,14 +53,16 @@ public class ChangeDataServlet extends HttpServlet {
         if (action != null) {
             switch (action) {
                 case "save":
-                    UserModel user = validator.validateChangingDataForm(req, sessionManager.getUser(req));
-                    if (user != null) {
+                    try {
+                        UserModel user = validator.validateChangingDataForm(req, sessionManager.getUser(req));
                         repositoryJdbc.update(user);
+                    } catch (ValidationException e) {
+                        req.setAttribute(Constants.ERROR, e.getMessage());
                     }
                     context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
                     break;
                 case "cancel":
-                    resp.sendRedirect(context.getContextPath()+"/login");
+                    resp.sendRedirect(context.getContextPath()+"/account");
                     break;
             }
         }

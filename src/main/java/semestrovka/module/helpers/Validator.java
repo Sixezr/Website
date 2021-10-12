@@ -1,6 +1,6 @@
 package semestrovka.module.helpers;
 
-import semestrovka.module.exceptions.FileSystemManagerException;
+import semestrovka.module.exceptions.*;
 import semestrovka.module.entities.ProductModel;
 import semestrovka.module.entities.UserModel;
 import semestrovka.module.managers.*;
@@ -19,11 +19,9 @@ public class Validator extends AbstractValidator{
         String stringPrice = req.getParameter(PRICE_PARAMETR);
 
         if (name == null) {
-            req.setAttribute(ERROR, "Название не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Название не может быть пустым");
         } else if (stringPrice == null) {
-            req.setAttribute(ERROR, "Цента не может быть пустой");
-            return null;
+            throw new EmptyParametrException("Цена не может быть пустой");
         }
 
         name = name.trim();
@@ -33,17 +31,9 @@ public class Validator extends AbstractValidator{
         try {
             price = Double.parseDouble(stringPrice.replaceAll(",", "."));
         } catch (NumberFormatException e) {
-            req.setAttribute(ERROR, "Цена не должна содержать ничего, кроме цифр");
-            return null;
+            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр");
         }
-        String photo;
-
-        try {
-            photo = fileSystemManager.downloadFile(req);
-        } catch (FileSystemManagerException e) {
-            req.setAttribute(ERROR, "Проблема с загрузкой файла, повторите попытку");
-            return null;
-        }
+        String photo = fileSystemManager.downloadFile(req);
 
         req.setAttribute(OK, "Товар добавлен");
         return new ProductModel(name, price, photo);
@@ -56,17 +46,13 @@ public class Validator extends AbstractValidator{
         String pass = req.getParameter(PASS_PARAMETR);
 
         if (name == null) {
-            req.setAttribute(ERROR, "Имя не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Имя не может быть пустым");
         } else if (secondName == null) {
-            req.setAttribute(ERROR, "Фамилия не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Фамилия не может быть пустой");
         } else if (phoneNumber == null) {
-            req.setAttribute(ERROR, "Номер телефона не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Номер телефона не может быть пустым");
         } else if (pass == null) {
-            req.setAttribute(ERROR, "Password не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Password не может быть пустым");
         }
 
         name = name.trim();
@@ -76,24 +62,19 @@ public class Validator extends AbstractValidator{
 
         if (user.getName().equals(name) && user.getSecondName().equals(secondName)
                 && user.getPhoneNumber().equals(phoneNumber) && user.getPass().equals(pass)) {
-            req.setAttribute(ERROR, "Нечего изменить");
-            return null;
+            throw new EqualDataException("Нечего изменить");
         }
         if (!isValidName(name)) {
-            req.setAttribute(ERROR, "Имя должно содержать только буквы, а размер не более 12 и не менее 2");
-            return null;
+            throw new InvalidNameException("Имя должно содержать только буквы, а размер не более 12 и не менее 2");
         }
         if (!isValidName(secondName)) {
-            req.setAttribute(ERROR, "Фамилия должна содержать только буквы, а размер не более 12 и не менее 2");
-            return null;
+            throw new InvalidNameException("Фамилия должна содержать только буквы, а размер не более 12 и не менее 2");
         }
         if (!isValidPhoneNumber(phoneNumber)) {
-            req.setAttribute(ERROR, "Неверный формат номера телефона");
-            return null;
+            throw new InvalidPhoneNumberException("Неверный формат номера телефона");
         }
-        if (pass.length() < 8) {
-            req.setAttribute(ERROR, "Минимальная длина пароля - 8 символов");
-            return null;
+        if (!isValidPass(pass)) {
+            throw new WeakPasswordExceptions("Минимальная длина пароля - 8 символов");
         }
 
         user.setName(name);
@@ -110,26 +91,19 @@ public class Validator extends AbstractValidator{
 
         req.setAttribute("repeated_email", email);
         if (email == null) {
-            req.setAttribute(ERROR, "Email не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Email не может быть пустым");
         } else if (pass == null) {
-            req.setAttribute(ERROR, "Password не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Password не может быть пустым");
         }
 
         email = email.trim();
         pass = pass.trim();
 
         if (!isEmailValid(email)) {
-            req.setAttribute(ERROR, "Неверный формат email");
-            return null;
+            throw new InvalidEmailException("Неверный формат email");
         }
 
         UserModel user = isRightData(email, pass);
-        if (user == null) {
-            req.setAttribute(ERROR, "Неверный пароль или email");
-            return null;
-        }
         return user;
     }
 
@@ -146,20 +120,15 @@ public class Validator extends AbstractValidator{
         req.setAttribute("repeated_email", email);
 
         if (name == null) {
-            req.setAttribute(ERROR, "Имя не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Имя не может быть пустым");
         } else if (secondName == null) {
-            req.setAttribute(ERROR, "Фамилия не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Фамилия не может быть пустой");
         } else if (phoneNumber == null) {
-            req.setAttribute(ERROR, "Номер телефона не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Номер телефона не может быть пустым");
         } else if (email == null) {
-            req.setAttribute(ERROR, "Email не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Email не может быть пустым");
         } else if (pass == null) {
-            req.setAttribute(ERROR, "Password не может быть пустым");
-            return null;
+            throw new EmptyParametrException("Password не может быть пустым");
         }
 
         name = name.trim();
@@ -169,28 +138,22 @@ public class Validator extends AbstractValidator{
         pass = pass.trim();
 
         if (!isValidName(name)) {
-            req.setAttribute(ERROR, "Имя должно содержать только буквы, а размер не более 12 и не менее 2");
-            return null;
+            throw new InvalidNameException("Имя должно содержать только буквы, а размер не более 12 и не менее 2");
         }
         if (!isValidName(secondName)) {
-            req.setAttribute(ERROR, "Фамилия должна содержать только буквы, а размер не более 12 и не менее 2");
-            return null;
+            throw new InvalidNameException("Фамилия должна содержать только буквы, а размер не более 12 и не менее 2");
         }
         if (!isValidPhoneNumber(phoneNumber)) {
-            req.setAttribute(ERROR, "Неверный формат номера телефона");
-            return null;
+            throw new InvalidPhoneNumberException("Неверный формат номера телефона");
         }
-        if (pass.length() < 8) {
-            req.setAttribute(ERROR, "Минимальная длина пароля - 8 символов");
-            return null;
-        }
-        if (isEmailUnvailable(email)) {
-            req.setAttribute(ERROR, "Данный email уже ипользуется");
-            return null;
+        if (!isValidPass(pass)) {
+            throw new WeakPasswordExceptions("Минимальная длина пароля - 8 символов");
         }
         if (!isEmailValid(email)) {
-            req.setAttribute(ERROR, "Неверный формат email");
-            return null;
+            throw new InvalidEmailException("Неверный формат email");
+        }
+        if (isEmailUnvailable(email)) {
+            throw new UnvailableEmailException("Данный email уже ипользуется");
         }
 
         UserModel user = new UserModel(name, secondName, email, pass, phoneNumber);

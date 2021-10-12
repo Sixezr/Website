@@ -10,4 +10,5 @@ public class Constants {
     public static final String USER = "user";
     public static final String CART = "cart";
     public static final String TOKEN = "auth_token";
+    public static final String ERROR = "error";
 }

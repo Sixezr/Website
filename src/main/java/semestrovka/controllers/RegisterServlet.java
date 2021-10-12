@@ -1,6 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.entities.UserModel;
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.ISessionManager;
@@ -42,12 +43,13 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        UserModel user = validator.validateRegisterForm(req);
-        if (user != null) {
+        try {
+            UserModel user = validator.validateRegisterForm(req);
             repositoryJdbc.save(user);
             sessionManager.signIn(req, resp, repositoryJdbc.findByEmail(user.getEmail()).get());
             resp.sendRedirect(context.getContextPath() + "/account");
-        } else {
+        } catch (ValidationException e) {
+            req.setAttribute(Constants.ERROR, e.getMessage());
             context.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
         }
     }

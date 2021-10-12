@@ -42,6 +42,7 @@ public class CartModel {
     }
 
     public void clearCart() {
+        price = 0;
         cart.clear();
         products.clear();
     }

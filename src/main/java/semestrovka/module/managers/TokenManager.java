@@ -9,13 +9,15 @@ import java.util.UUID;
 
 public final class TokenManager implements ITokenManager {
 
+    private final int maxAge = 365 * 24 * 60 * 60;
+
     public String generateToken() {
         return String.valueOf(UUID.randomUUID());
     }
 
     public void saveToken(HttpServletResponse resp, String token) {
         Cookie cookie = new Cookie(Constants.TOKEN, token);
-        cookie.setMaxAge(-1);
+        cookie.setMaxAge(maxAge);
         resp.addCookie(cookie);
     }
 

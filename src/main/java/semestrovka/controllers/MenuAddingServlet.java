@@ -1,6 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.entities.ProductModel;
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.ISessionManager;
@@ -49,9 +50,11 @@ public class MenuAddingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         if (securityManager.isAdmin(req)) {
-            ProductModel productModel = validator.validateAddingForm(req);
-            if (productModel != null) {
+            try {
+                ProductModel productModel = validator.validateAddingForm(req);
                 productRepository.save(productModel);
+            } catch (ValidationException e) {
+                req.setAttribute(Constants.ERROR, e.getMessage());
             }
             context.getRequestDispatcher("/WEB-INF/views/adding.jsp").forward(req, resp);
         }

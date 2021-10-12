@@ -1,6 +1,6 @@
 package semestrovka.module.exceptions;
 
-public class FileSystemManagerException extends Exception {
+public class FileSystemManagerException extends ValidationException {
 
     public FileSystemManagerException() {
     }
