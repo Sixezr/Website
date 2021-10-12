@@ -54,7 +54,7 @@ public class ChangeDataServlet extends HttpServlet {
             switch (action) {
                 case "save":
                     try {
-                        UserModel user = validator.validateChangingDataForm(req, sessionManager.getUser(req));
+                        UserModel user = validator.validateChangeDataForm(req, sessionManager.getUser(req));
                         repositoryJdbc.update(user);
                     } catch (ValidationException e) {
                         req.setAttribute(Constants.ERROR, e.getMessage());

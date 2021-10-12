@@ -74,7 +74,7 @@ public final class UserRepositoryJdbcImp implements UserRepository {
     }
 
 
-    public Optional<UserModel> findById(Long id) {
+    public Optional<UserModel> findById(int id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setLong(1, id);

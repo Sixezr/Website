@@ -26,6 +26,9 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
     //language=SQL
     private static final String SQL_INSERT  = "INSERT INTO product(name, price, image) VALUES(?,?,?)";
 
+    //language=SQL
+    private static final String SQL_UPDATE_PRODUCT = "update product set name = ?, price = ? where id = ?";
+
     private final DataSource dataSource;
 
     private final Function<ResultSet, ProductModel> accountRowMapper = row -> {
@@ -79,7 +82,7 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
     }
 
     @Override
-    public Optional<ProductModel> findById(Long id) {
+    public Optional<ProductModel> findById(int id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement statement = conn.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setLong(1, id);
@@ -111,6 +114,14 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
 
     @Override
     public void update(ProductModel entity) {
-
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(SQL_UPDATE_PRODUCT)) {
+            statement.setString(1, entity.getName());
+            statement.setDouble(2, entity.getPrice());
+            statement.setInt(3, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

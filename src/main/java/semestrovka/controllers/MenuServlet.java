@@ -53,9 +53,9 @@ public class MenuServlet extends HttpServlet {
         if (sessionManager.isAuthenticated(req)) {
             CartModel cartModel = sessionManager.getCart(req);
             String productId = req.getParameter("product-id");
-            long id;
+            int id;
             try {
-                id = Long.parseLong(productId);
+                id = Integer.parseInt(productId);
             } catch (NumberFormatException e) {
                 return;
             }

@@ -6,7 +6,10 @@ import semestrovka.module.entities.UserModel;
 import semestrovka.module.managers.*;
 import semestrovka.module.repositories.UserRepository;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+import java.io.IOException;
 
 public class Validator extends AbstractValidator{
 
@@ -39,7 +42,65 @@ public class Validator extends AbstractValidator{
         return new ProductModel(name, price, photo);
     }
 
-    public UserModel validateChangingDataForm(HttpServletRequest req, UserModel user) {
+    @Override
+    public ProductModel validateChangeProductForm(HttpServletRequest req) {
+        String stringId = req.getParameter(ID_PARAMETR);
+        String name = req.getParameter(NAME_PARAMETR);
+        String stringPrice = req.getParameter(PRICE_PARAMETR);
+        String pictureName = req.getParameter(PICTURE_NAME_PARAMETR);
+
+        req.setAttribute(PRICE_PARAMETR, stringPrice);
+        req.setAttribute(NAME_PARAMETR, name);
+        req.setAttribute(ID_PARAMETR, stringId);
+        req.setAttribute(PICTURE_NAME_PARAMETR, pictureName);
+
+        if (name == null) {
+            throw new EmptyParametrException("Название не может быть пустым");
+        } else if (stringPrice == null) {
+            throw new EmptyParametrException("Цена не может быть пустой");
+        } else if (pictureName == null) {
+            throw new EmptyParametrException("Название картинки не может быть пустым");
+        } else if (stringId == null) {
+            throw new EmptyParametrException("ID не может быть пустым");
+        }
+
+        stringId = stringId.trim();
+        name = name.trim();
+        stringPrice = stringPrice.trim();
+        double price;
+        int id;
+
+        try {
+            price = Double.parseDouble(stringPrice.replaceAll(",", "."));
+        } catch (NumberFormatException e) {
+            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр");
+        }
+        try {
+            id = Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            throw new ValidationException("ID должно быть числом");
+        }
+        fileSystemManager.downloadNewFile(req, pictureName);
+
+        ProductModel productModel = new ProductModel(id, name, price, pictureName);
+        req.setAttribute(OK, "Товар обновлен");
+        return productModel;
+    }
+
+    @Override
+    public int validateChangeProductRequest(HttpServletRequest req) {
+        String stringId = req.getParameter("product_id");
+        if (stringId == null) {
+            throw new EmptyParametrException("Пустой id");
+        }
+        try {
+            return Integer.parseInt(stringId);
+        } catch (NumberFormatException e) {
+            throw new UncorrectDataException("Id может быть только числом");
+        }
+    }
+
+    public UserModel validateChangeDataForm(HttpServletRequest req, UserModel user) {
         String name = req.getParameter(NAME_PARAMETR);
         String secondName = req.getParameter(SECOND_NAME_PARAMETR);
         String phoneNumber = req.getParameter(PHONE_PARAMETR);

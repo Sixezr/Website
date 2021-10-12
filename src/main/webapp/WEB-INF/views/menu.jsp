@@ -25,7 +25,9 @@
                       <button type="submit" type="button" class="btn btn-sm btn-outline-secondary" name="product-id" value="${product.getId()}">В корзину</button>
                     </form>
                     <c:if test="${user.isAdmin()}">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                      <form action="<c:url value="/menu/change"/>">
+                        <button type="submit" name="product_id" value="${product.getId()}" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                      </form>
                     </c:if>
                   </div>
                   <small class="text-muted">${product.getPrice()} р</small>
