@@ -4,8 +4,8 @@ import semestrovka.module.entities.UserModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 import semestrovka.module.repositories.UserRepository;
 import semestrovka.module.repositories.UserRepositoryJdbcImp;
 
@@ -24,29 +24,27 @@ public class RegisterServlet extends HttpServlet {
     private ServletContext context;
     private UserRepository repositoryJdbc;
     private Validator validator;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
         repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
         validator = (Validator) context.getAttribute(Constants.VALIDATOR);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         context.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         try {
             UserModel user = validator.validateRegisterForm(req);
             repositoryJdbc.save(user);
-            sessionManager.signIn(req, resp, repositoryJdbc.findByEmail(user.getEmail()).get());
+            authManager.signIn(req, resp, repositoryJdbc.findByEmail(user.getEmail()).get());
             resp.sendRedirect(context.getContextPath() + "/account");
         } catch (ValidationException e) {
             req.setAttribute(Constants.ERROR, e.getMessage());

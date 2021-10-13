@@ -6,12 +6,10 @@ import semestrovka.module.entities.UserModel;
 import semestrovka.module.managers.*;
 import semestrovka.module.repositories.UserRepository;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import java.io.IOException;
 
-public class Validator extends AbstractValidator{
+
+public class Validator extends AbstractValidator {
 
     public Validator(UserRepository userRepository, AbstractFileSystemManager fileSystemManager, ITokenManager tokenManager) {
         super(userRepository, fileSystemManager, tokenManager);
@@ -142,7 +140,7 @@ public class Validator extends AbstractValidator{
         user.setSecondName(secondName);
         user.setPhoneNumber(phoneNumber);
         user.setPass(pass);
-        req.setAttribute(OK,"Ваши данные изменены");
+        req.setAttribute(OK, "Ваши данные изменены");
         return user;
     }
 

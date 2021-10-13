@@ -38,8 +38,8 @@ public class CartRepositoryJdbcImpl implements CartRepository {
             String name = row.getString("name");
             double price = row.getDouble("price");
             int count = row.getInt("count");
-            for (int i = 0; i < count ; i++) {
-                products.add(new ProductModel(id,name,price));
+            for (int i = 0; i < count; i++) {
+                products.add(new ProductModel(id, name, price));
             }
             return products;
         } catch (SQLException e) {

@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public final class SessionManager implements ISessionManager {
+public final class AuthManager implements IAuthManager {
 
     private final UserRepository userRepository;
     private final ITokenManager tokenManager;
     private final CartRepository cartRepository;
 
-    public SessionManager(UserRepository userRepository, ITokenManager tokenManager, CartRepository cartRepository) {
+    public AuthManager(UserRepository userRepository, ITokenManager tokenManager, CartRepository cartRepository) {
         this.userRepository = userRepository;
         this.tokenManager = tokenManager;
         this.cartRepository = cartRepository;
@@ -37,11 +37,11 @@ public final class SessionManager implements ISessionManager {
 
     public boolean authenticate(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-        if(cookies != null){
-            for (Cookie c : cookies){
-                if(c.getName().equals(Constants.TOKEN)){
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals(Constants.TOKEN)) {
                     Optional<UserModel> user = userRepository.findByToken(c.getValue());
-                    if(user.isPresent()){
+                    if (user.isPresent()) {
                         CartModel cart = cartRepository.findCart(user.get().getId());
                         req.getSession().setAttribute(Constants.USER, user.get());
                         req.getSession().setAttribute(Constants.CART, cart);
@@ -54,7 +54,7 @@ public final class SessionManager implements ISessionManager {
     }
 
     public UserModel getUser(HttpServletRequest req) {
-        return  (UserModel) req.getSession().getAttribute(Constants.USER);
+        return (UserModel) req.getSession().getAttribute(Constants.USER);
     }
 
     @Override

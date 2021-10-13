@@ -40,12 +40,12 @@ public class CustomProductCollections implements ICustomProductCollection<Produc
 
     @Override
     public int getCurrentProductCount() {
-        return counterOfProducts.get(collectionCursor-1);
+        return counterOfProducts.get(collectionCursor - 1);
     }
 
     @Override
     public double getCurrentPriceForProducts() {
-        return products.get(collectionCursor-1).getPrice() * counterOfProducts.get(collectionCursor-1);
+        return products.get(collectionCursor - 1).getPrice() * counterOfProducts.get(collectionCursor - 1);
     }
 
     @Override

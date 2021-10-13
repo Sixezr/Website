@@ -5,7 +5,10 @@ import java.util.Optional;
 
 public interface Repository<T> {
     List<T> findAll();
+
     Optional<T> findById(int id);
+
     void save(T entity);
+
     void update(T entity);
 }

@@ -18,13 +18,13 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
     private static final String SQL_FIND_ALL = "SELECT * FROM product";
 
     //language=SQL
-    private static final String SQL_FIND_BY_ID  = "SELECT * FROM product where id = ?";
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM product where id = ?";
 
     //language=SQL
-    private static final String SQL_FIND_BY_NAME  = "SELECT * FROM product where name = ?";
+    private static final String SQL_FIND_BY_NAME = "SELECT * FROM product where name = ?";
 
     //language=SQL
-    private static final String SQL_INSERT  = "INSERT INTO product(name, price, image) VALUES(?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO product(name, price, image) VALUES(?,?,?)";
 
     //language=SQL
     private static final String SQL_UPDATE_PRODUCT = "update product set name = ?, price = ? where id = ?";

@@ -40,14 +40,14 @@ public class InitListener implements ServletContextListener {
         CartRepository cartRepository = new CartRepositoryJdbcImpl(dataSource);
         AbstractFileSystemManager fileSystemManager = new FileSystemManager();
         ITokenManager tokenManager = new TokenManager();
-        ISessionManager securityManager = new SessionManager(userRepository, tokenManager, cartRepository);
+        IAuthManager securityManager = new AuthManager(userRepository, tokenManager, cartRepository);
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
 
         servletContext.setAttribute(Constants.USER_REPOSITORY, userRepository);
         servletContext.setAttribute(Constants.PRODUCT_REPOSITORY, productRepository);
         servletContext.setAttribute(Constants.CART_REPOSITORY, cartRepository);
         servletContext.setAttribute(Constants.FILE_SYSTEM_MANAGER, fileSystemManager);
-        servletContext.setAttribute(Constants.SESSION_MANAGER, securityManager);
+        servletContext.setAttribute(Constants.AUTH_MANAGER, securityManager);
         servletContext.setAttribute(Constants.VALIDATOR, validator);
     }
 

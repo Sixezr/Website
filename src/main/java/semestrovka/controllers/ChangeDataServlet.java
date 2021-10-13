@@ -4,8 +4,8 @@ import semestrovka.module.entities.UserModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 import semestrovka.module.repositories.UserRepository;
 import semestrovka.module.repositories.UserRepositoryJdbcImp;
 
@@ -24,37 +24,36 @@ public class ChangeDataServlet extends HttpServlet {
     private ServletContext context;
     private Validator validator;
     private UserRepository repositoryJdbc;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
         validator = (Validator) context.getAttribute(Constants.VALIDATOR);
         repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (sessionManager.isAuthenticated(req)) {
+        if (authManager.isAuthenticated(req)) {
             context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
         } else {
-            resp.sendRedirect(context.getContextPath()+"/login");
+            resp.sendRedirect(context.getContextPath() + "/login");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        if (!sessionManager.isAuthenticated(req)) {
-            resp.sendRedirect(context.getContextPath()+"/login");
+        if (!authManager.isAuthenticated(req)) {
+            resp.sendRedirect(context.getContextPath() + "/login");
         }
         String action = req.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "save":
                     try {
-                        UserModel user = validator.validateChangeDataForm(req, sessionManager.getUser(req));
+                        UserModel user = validator.validateChangeDataForm(req, authManager.getUser(req));
                         repositoryJdbc.update(user);
                     } catch (ValidationException e) {
                         req.setAttribute(Constants.ERROR, e.getMessage());
@@ -62,7 +61,7 @@ public class ChangeDataServlet extends HttpServlet {
                     context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
                     break;
                 case "cancel":
-                    resp.sendRedirect(context.getContextPath()+"/account");
+                    resp.sendRedirect(context.getContextPath() + "/account");
                     break;
             }
         }

@@ -5,8 +5,8 @@ import semestrovka.module.entities.ProductModel;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.managers.AbstractFileSystemManager;
 import semestrovka.module.managers.FileSystemManager;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 import semestrovka.module.repositories.CartRepository;
 import semestrovka.module.repositories.CartRepositoryJdbcImpl;
 import semestrovka.module.repositories.ProductRepository;
@@ -29,7 +29,7 @@ public class MenuServlet extends HttpServlet {
     private ProductRepository productRepository;
     private CartRepository cartRepository;
     private AbstractFileSystemManager fileSystemManager;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
@@ -37,7 +37,7 @@ public class MenuServlet extends HttpServlet {
         productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
         fileSystemManager = (FileSystemManager) context.getAttribute(Constants.FILE_SYSTEM_MANAGER);
         cartRepository = (CartRepositoryJdbcImpl) context.getAttribute(Constants.CART_REPOSITORY);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
@@ -49,9 +49,8 @@ public class MenuServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.setCharacterEncoding("UTF-8");
-        if (sessionManager.isAuthenticated(req)) {
-            CartModel cartModel = sessionManager.getCart(req);
+        if (authManager.isAuthenticated(req)) {
+            CartModel cartModel = authManager.getCart(req);
             String productId = req.getParameter("product-id");
             int id;
             try {
@@ -62,11 +61,11 @@ public class MenuServlet extends HttpServlet {
             Optional<ProductModel> productModel = productRepository.findById(id);
             if (productModel.isPresent()) {
                 cartModel.addProduct(productModel.get());
-                cartRepository.addProduct(sessionManager.getUser(req).getId(), id);
+                cartRepository.addProduct(authManager.getUser(req).getId(), id);
             }
             context.getRequestDispatcher("/WEB-INF/views/menu.jsp").forward(req, resp);
         } else {
-            resp.sendRedirect(context.getContextPath()+"/login");
+            resp.sendRedirect(context.getContextPath() + "/login");
         }
     }
 }

@@ -23,9 +23,9 @@ public final class TokenManager implements ITokenManager {
 
     public void removeToken(HttpServletRequest req, HttpServletResponse resp) {
         Cookie[] cookies = req.getCookies();
-        if(cookies != null){
-            for (Cookie c : cookies){
-                if(c.getName().equals(Constants.TOKEN)){
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if (c.getName().equals(Constants.TOKEN)) {
                     c.setMaxAge(0);
                     resp.addCookie(c);
                     return;

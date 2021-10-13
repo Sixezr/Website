@@ -12,11 +12,11 @@ import java.nio.file.Files;
 public final class FileSystemManager extends AbstractFileSystemManager {
 
     public FileSystemManager() {
-       super();
+        super();
     }
 
     public String downloadFile(HttpServletRequest req) throws FileSystemManagerException {
-        File file = new File(PATH_TO_UPLOADS+generateRandomName()+EXTENSION);
+        File file = new File(PATH_TO_UPLOADS + generateRandomName() + EXTENSION);
         Part part;
         InputStream inputStream;
         try {
@@ -24,12 +24,12 @@ public final class FileSystemManager extends AbstractFileSystemManager {
             part = req.getPart("photo");
             inputStream = part.getInputStream();
         } catch (IOException | ServletException e) {
-            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз", e);
         }
         try {
             Files.copy(inputStream, file.toPath());
         } catch (IOException e) {
-            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз", e);
         }
         copyFilesToWeb(req.getContextPath());
         return file.getName();
@@ -37,7 +37,7 @@ public final class FileSystemManager extends AbstractFileSystemManager {
 
     @Override
     public void downloadNewFile(HttpServletRequest req, String oldName) throws FileSystemManagerException {
-        File file = new File(PATH_TO_UPLOADS+oldName);
+        File file = new File(PATH_TO_UPLOADS + oldName);
         Part part;
         InputStream inputStream;
         try {
@@ -49,19 +49,19 @@ public final class FileSystemManager extends AbstractFileSystemManager {
             deleteFiles(oldName, req.getContextPath());
             inputStream = part.getInputStream();
         } catch (IOException | ServletException e) {
-            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз", e);
         }
         try {
             Files.copy(inputStream, file.toPath());
         } catch (IOException e) {
-            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз");
+            throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз", e);
         }
         copyFilesToWeb(req.getContextPath());
     }
 
     public void copyFilesToWeb(String context) {
         File directory = new File(PATH_TO_UPLOADS);
-        File webDirectory =  new File(PATH_TO_WEB+context+PATH_TO_IMG_IN_WEB);
+        File webDirectory = new File(PATH_TO_WEB + context + PATH_TO_IMG_IN_WEB);
         webDirectory.mkdirs();
         if (webDirectory.listFiles().length != directory.listFiles().length) {
             try {
@@ -73,9 +73,9 @@ public final class FileSystemManager extends AbstractFileSystemManager {
     }
 
     private void deleteFiles(String name, String context) {
-        File file = new File(PATH_TO_UPLOADS+name);
+        File file = new File(PATH_TO_UPLOADS + name);
         file.delete();
-        file = new File(PATH_TO_WEB+context+PATH_TO_IMG_IN_WEB+name);
+        file = new File(PATH_TO_WEB + context + PATH_TO_IMG_IN_WEB + name);
         file.delete();
     }
 }

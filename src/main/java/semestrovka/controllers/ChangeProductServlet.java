@@ -4,8 +4,8 @@ import semestrovka.module.entities.ProductModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 import semestrovka.module.repositories.ProductRepository;
 import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ChangeProductServlet extends HttpServlet {
 
     private ServletContext context;
-    private ISessionManager securityManager;
+    private IAuthManager authManager;
     private Validator validator;
     private ProductRepository productRepository;
 
@@ -33,13 +33,13 @@ public class ChangeProductServlet extends HttpServlet {
     public void init(ServletConfig config) {
         context = config.getServletContext();
         productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
-        securityManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
         validator = (Validator) context.getAttribute(Constants.VALIDATOR);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (securityManager.isAdmin(req)) {
+        if (authManager.isAdmin(req)) {
             try {
                 int id = validator.validateChangeProductRequest(req);
                 Optional<ProductModel> productModel = productRepository.findById(id);
@@ -61,8 +61,7 @@ public class ChangeProductServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        if (securityManager.isAdmin(req)) {
+        if (authManager.isAdmin(req)) {
             try {
                 ProductModel productModel = validator.validateChangeProductForm(req);
                 productRepository.update(productModel);

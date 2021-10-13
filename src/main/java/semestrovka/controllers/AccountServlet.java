@@ -2,8 +2,8 @@ package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -19,27 +19,26 @@ public class AccountServlet extends HttpServlet {
 
     private ServletContext context;
     private Validator validator;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
         validator = (Validator) context.getAttribute(Constants.VALIDATOR);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "change":
-                    resp.sendRedirect(context.getContextPath()+"/account/change");
+                    resp.sendRedirect(context.getContextPath() + "/account/change");
                     return;
                 case "quit":
-                    sessionManager.signOut(req, resp);
-                    resp.sendRedirect(context.getContextPath()+"/login");
+                    authManager.signOut(req, resp);
+                    resp.sendRedirect(context.getContextPath() + "/login");
                     return;
             }
         }

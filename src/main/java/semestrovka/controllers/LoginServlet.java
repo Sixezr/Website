@@ -4,8 +4,8 @@ import semestrovka.module.entities.UserModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -21,19 +21,19 @@ public class LoginServlet extends HttpServlet {
 
     private ServletContext context;
     private Validator validator;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
         validator = (Validator) context.getAttribute(Constants.VALIDATOR);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (sessionManager.isAuthenticated(req) || sessionManager.authenticate(req)) {
-            resp.sendRedirect(context.getContextPath()+"/account");
+        if (authManager.isAuthenticated(req) || authManager.authenticate(req)) {
+            resp.sendRedirect(context.getContextPath() + "/account");
         } else {
             context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
         }
@@ -41,11 +41,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         try {
             UserModel user = validator.validateSignInForm(req);
-            sessionManager.signIn(req, resp, user);
-            resp.sendRedirect(context.getContextPath()+"/account");
+            authManager.signIn(req, resp, user);
+            resp.sendRedirect(context.getContextPath() + "/account");
         } catch (ValidationException e) {
             req.setAttribute(Constants.ERROR, e.getMessage());
             context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);

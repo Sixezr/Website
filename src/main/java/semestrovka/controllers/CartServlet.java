@@ -1,8 +1,8 @@
 package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.managers.ISessionManager;
-import semestrovka.module.managers.SessionManager;
+import semestrovka.module.managers.IAuthManager;
+import semestrovka.module.managers.AuthManager;
 import semestrovka.module.repositories.CartRepository;
 import semestrovka.module.repositories.CartRepositoryJdbcImpl;
 import semestrovka.module.repositories.UserRepositoryJdbcImp;
@@ -23,14 +23,14 @@ public class CartServlet extends HttpServlet {
     private ServletContext context;
     private UserRepository userRepository;
     private CartRepository cartRepository;
-    private ISessionManager sessionManager;
+    private IAuthManager authManager;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
         userRepository = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
         cartRepository = (CartRepositoryJdbcImpl) context.getAttribute(Constants.CART_REPOSITORY);
-        sessionManager = (SessionManager) context.getAttribute(Constants.SESSION_MANAGER);
+        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override
@@ -40,11 +40,10 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         if (action.equals("clearAll")) {
-            sessionManager.getCart(req).clearCart();
-            cartRepository.removeAll(sessionManager.getUser(req).getId());
+            authManager.getCart(req).clearCart();
+            cartRepository.removeAll(authManager.getUser(req).getId());
         }
         context.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
     }
