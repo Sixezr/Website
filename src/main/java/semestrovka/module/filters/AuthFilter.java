@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/account", "/cart/*", "/menu"})
+@WebFilter(urlPatterns = {"/account/*", "/cart/*", "/menu/*"})
 public class AuthFilter implements Filter {
 
     private ServletContext context;

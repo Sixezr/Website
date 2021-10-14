@@ -34,10 +34,10 @@ public class MenuServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
-        fileSystemManager = (FileSystemManager) context.getAttribute(Constants.FILE_SYSTEM_MANAGER);
-        cartRepository = (CartRepositoryJdbcImpl) context.getAttribute(Constants.CART_REPOSITORY);
-        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        productRepository = (ProductRepository) context.getAttribute(Constants.PRODUCT_REPOSITORY);
+        fileSystemManager = (AbstractFileSystemManager) context.getAttribute(Constants.FILE_SYSTEM_MANAGER);
+        cartRepository = (CartRepository) context.getAttribute(Constants.CART_REPOSITORY);
+        authManager = (IAuthManager) context.getAttribute(Constants.AUTH_MANAGER);
     }
 
     @Override

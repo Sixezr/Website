@@ -1,4 +1,4 @@
-package semestrovka.module.entities;
+package semestrovka.module.collestions;
 
 import java.util.Collection;
 

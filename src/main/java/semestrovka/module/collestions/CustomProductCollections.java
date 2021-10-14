@@ -1,4 +1,6 @@
-package semestrovka.module.entities;
+package semestrovka.module.collestions;
+
+import semestrovka.module.entities.ProductModel;
 
 import java.util.ArrayList;
 import java.util.Collection;

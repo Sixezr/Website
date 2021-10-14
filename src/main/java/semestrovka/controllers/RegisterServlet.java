@@ -1,13 +1,7 @@
 package semestrovka.controllers;
 
-import semestrovka.module.entities.UserModel;
-import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
-import semestrovka.module.repositories.UserRepository;
-import semestrovka.module.repositories.UserRepositoryJdbcImp;
+import semestrovka.module.services.ISecurityService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -22,16 +16,12 @@ import java.io.IOException;
 public class RegisterServlet extends HttpServlet {
 
     private ServletContext context;
-    private UserRepository repositoryJdbc;
-    private Validator validator;
-    private IAuthManager authManager;
+    private ISecurityService securityService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        repositoryJdbc = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
-        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
-        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
     }
 
     @Override
@@ -41,13 +31,8 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            UserModel user = validator.validateRegisterForm(req);
-            repositoryJdbc.save(user);
-            authManager.signIn(req, resp, repositoryJdbc.findByEmail(user.getEmail()).get());
-            resp.sendRedirect(context.getContextPath() + "/account");
-        } catch (ValidationException e) {
-            req.setAttribute(Constants.ERROR, e.getMessage());
+        boolean isForwardNeeded = securityService.processRegisterRequest(req, resp, context.getContextPath());
+        if (isForwardNeeded) {
             context.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
         }
     }

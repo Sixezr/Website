@@ -1,7 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.services.ISecurityService;
+import semestrovka.module.services.IProfileService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -12,31 +12,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/account/change")
+public class ChangeDataAccountServlet extends HttpServlet {
 
     private ServletContext context;
-    private ISecurityService securityService;
+    private IProfileService profileService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
+        profileService = (IProfileService) context.getAttribute(Constants.PROFILE_SERVICE);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = securityService.processGetLoginRequest(req, resp, context.getContextPath());
-        if (isForwardNeeded) {
-            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
-        }
+        context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = securityService.processLoginRequest(req, resp, context.getContextPath());
+        boolean isForwardNeeded = profileService.processChangeDataRequest(req, resp, context.getContextPath());
         if (isForwardNeeded) {
-            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+            context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
         }
     }
 }

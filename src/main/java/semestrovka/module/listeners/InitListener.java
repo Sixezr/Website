@@ -6,6 +6,10 @@ import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.*;
 import semestrovka.module.repositories.*;
+import semestrovka.module.services.IProfileService;
+import semestrovka.module.services.ISecurityService;
+import semestrovka.module.services.ProfileService;
+import semestrovka.module.services.SecurityService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -27,6 +31,7 @@ public class InitListener implements ServletContextListener {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(properties.getProperty("db.url"));
         hikariConfig.setDriverClassName(properties.getProperty("db.driver"));
@@ -40,19 +45,20 @@ public class InitListener implements ServletContextListener {
         CartRepository cartRepository = new CartRepositoryJdbcImpl(dataSource);
         AbstractFileSystemManager fileSystemManager = new FileSystemManager();
         ITokenManager tokenManager = new TokenManager();
-        IAuthManager securityManager = new AuthManager(userRepository, tokenManager, cartRepository);
+        IAuthManager authManager = new AuthManager(userRepository, tokenManager, cartRepository);
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
+
+        IProfileService profileService = new ProfileService(authManager, validator, userRepository);
+        ISecurityService securityService = new SecurityService(authManager, validator, userRepository);
 
         servletContext.setAttribute(Constants.USER_REPOSITORY, userRepository);
         servletContext.setAttribute(Constants.PRODUCT_REPOSITORY, productRepository);
         servletContext.setAttribute(Constants.CART_REPOSITORY, cartRepository);
         servletContext.setAttribute(Constants.FILE_SYSTEM_MANAGER, fileSystemManager);
-        servletContext.setAttribute(Constants.AUTH_MANAGER, securityManager);
+        servletContext.setAttribute(Constants.AUTH_MANAGER, authManager);
         servletContext.setAttribute(Constants.VALIDATOR, validator);
-    }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-
+        servletContext.setAttribute(Constants.PROFILE_SERVICE, profileService);
+        servletContext.setAttribute(Constants.SECUTRITY_SERVICE, securityService);
     }
 }

@@ -1,5 +1,7 @@
 package semestrovka.module.entities;
 
+import semestrovka.module.collestions.CustomProductCollections;
+
 import java.util.ArrayList;
 import java.util.List;
 

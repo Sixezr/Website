@@ -1,9 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
+import semestrovka.module.services.IProfileService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -18,30 +16,19 @@ import java.io.IOException;
 public class AccountServlet extends HttpServlet {
 
     private ServletContext context;
-    private Validator validator;
-    private IAuthManager authManager;
+    private IProfileService profileService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
-        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        profileService = (IProfileService) context.getAttribute(Constants.PROFILE_SERVICE);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-        if (action != null) {
-            switch (action) {
-                case "change":
-                    resp.sendRedirect(context.getContextPath() + "/account/change");
-                    return;
-                case "quit":
-                    authManager.signOut(req, resp);
-                    resp.sendRedirect(context.getContextPath() + "/login");
-                    return;
-            }
+        boolean isForwardNeeded = profileService.processGetRequest(req, resp, context.getContextPath());
+        if (isForwardNeeded) {
+            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
         }
-        context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
     }
 }
