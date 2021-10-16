@@ -1,5 +1,7 @@
 package semestrovka.controllers;
 
+
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.services.IProfileService;
 
@@ -31,9 +33,21 @@ public class ChangeDataAccountServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = profileService.processChangeDataRequest(req, resp, context.getContextPath());
-        if (isForwardNeeded) {
-            context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
+        String action = req.getParameter("action");
+        if (action != null) {
+            switch (action) {
+                case "save":
+                    try {
+                        profileService.save(req);
+                    } catch (ValidationException e) {
+                        req.setAttribute(Constants.ERROR, e.getMessage());
+                    }
+                    break;
+                case "cancel":
+                    resp.sendRedirect(context.getContextPath() + "/account");
+                    return;
+            }
         }
+        context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
     }
 }

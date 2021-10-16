@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebFilter("/*")
-public class CharacterFilter implements Filter {
+public class CharacterEncodingFilter implements Filter {
     private static final String ENCODING = "UTF-8";
 
     @Override

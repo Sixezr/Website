@@ -1,5 +1,6 @@
 package semestrovka.controllers;
 
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.services.ISecurityService;
 
@@ -26,17 +27,22 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = securityService.processGetLoginRequest(req, resp, context.getContextPath());
-        if (isForwardNeeded) {
+        if (securityService.isAuthenticated(req)) {
+            resp.sendRedirect(context.getContextPath() + "/account");
+        } else {
             context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = securityService.processLoginRequest(req, resp, context.getContextPath());
-        if (isForwardNeeded) {
-            context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+        try {
+            securityService.signIn(req, resp);
+            resp.sendRedirect(context.getContextPath() + "/account");
+            return;
+        } catch (ValidationException e) {
+            req.setAttribute(Constants.ERROR, e.getMessage());
         }
+        context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
     }
 }

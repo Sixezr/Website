@@ -26,9 +26,18 @@ public class AccountServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        boolean isForwardNeeded = profileService.processGetRequest(req, resp, context.getContextPath());
-        if (isForwardNeeded) {
-            context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
+        String action = req.getParameter("action");
+        if (action != null) {
+            switch (action) {
+                case "change":
+                    resp.sendRedirect(context.getContextPath() + "/account/change");
+                    return;
+                case "quit":
+                    profileService.signOut(req, resp);
+                    resp.sendRedirect(context.getContextPath() + "/login");
+                    return;
+            }
         }
+        context.getRequestDispatcher("/WEB-INF/views/account.jsp").forward(req, resp);
     }
 }

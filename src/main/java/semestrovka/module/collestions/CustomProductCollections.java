@@ -82,7 +82,7 @@ public class CustomProductCollections implements ICustomProductCollection<Produc
     }
 
     @Override
-    public boolean removeProductById(int id) {
+    public void removeProductById(int id) {
         for (int i = 0; i < size; i++) {
             if (products.get(i).getId() == id) {
                 if (counterOfProducts.get(i) > 1) {
@@ -92,10 +92,9 @@ public class CustomProductCollections implements ICustomProductCollection<Produc
                     counterOfProducts.remove(i);
                     size--;
                 }
-                return true;
+                return;
             }
         }
-        return false;
     }
 
     @Override

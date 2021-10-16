@@ -6,10 +6,7 @@ import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.*;
 import semestrovka.module.repositories.*;
-import semestrovka.module.services.IProfileService;
-import semestrovka.module.services.ISecurityService;
-import semestrovka.module.services.ProfileService;
-import semestrovka.module.services.SecurityService;
+import semestrovka.module.services.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -50,15 +47,10 @@ public class InitListener implements ServletContextListener {
 
         IProfileService profileService = new ProfileService(authManager, validator, userRepository);
         ISecurityService securityService = new SecurityService(authManager, validator, userRepository);
-
-        servletContext.setAttribute(Constants.USER_REPOSITORY, userRepository);
-        servletContext.setAttribute(Constants.PRODUCT_REPOSITORY, productRepository);
-        servletContext.setAttribute(Constants.CART_REPOSITORY, cartRepository);
-        servletContext.setAttribute(Constants.FILE_SYSTEM_MANAGER, fileSystemManager);
-        servletContext.setAttribute(Constants.AUTH_MANAGER, authManager);
-        servletContext.setAttribute(Constants.VALIDATOR, validator);
+        ICartService cartService = new CartService(authManager, cartRepository, productRepository, fileSystemManager, validator);
 
         servletContext.setAttribute(Constants.PROFILE_SERVICE, profileService);
         servletContext.setAttribute(Constants.SECUTRITY_SERVICE, securityService);
+        servletContext.setAttribute(Constants.CART_SERVICE, cartService);
     }
 }

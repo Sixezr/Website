@@ -2,14 +2,12 @@ package semestrovka.module.services;
 
 import semestrovka.module.entities.UserModel;
 import semestrovka.module.exceptions.ValidationException;
-import semestrovka.module.helpers.Constants;
 import semestrovka.module.helpers.IValidator;
 import semestrovka.module.managers.IAuthManager;
 import semestrovka.module.repositories.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public final class SecurityService implements ISecurityService {
     private final IAuthManager authManager;
@@ -23,39 +21,30 @@ public final class SecurityService implements ISecurityService {
     }
 
     @Override
-    public boolean processGetLoginRequest(HttpServletRequest req, HttpServletResponse resp, String contextPath) throws IOException {
-        if (authManager.isAuthenticated(req) || authManager.authenticate(req)) {
-            resp.sendRedirect(contextPath + "/account");
-            return false;
-        } else {
-            return true;
-        }
+    public boolean isAuthenticated(HttpServletRequest req) {
+        return authManager.isAuthenticated(req) || authManager.authenticate(req);
     }
 
     @Override
-    public boolean processLoginRequest(HttpServletRequest req, HttpServletResponse resp, String contextPath) throws IOException {
-        try {
-            UserModel user = validator.validateSignInForm(req);
-            authManager.signIn(req, resp, user);
-            resp.sendRedirect(contextPath + "/account");
-            return false;
-        } catch (ValidationException e) {
-            req.setAttribute(Constants.ERROR, e.getMessage());
-            return true;
-        }
+    public boolean authenticate(HttpServletRequest req) {
+        return authManager.authenticate(req);
     }
 
     @Override
-    public boolean processRegisterRequest(HttpServletRequest req, HttpServletResponse resp, String contextPath) throws IOException {
-        try {
-            UserModel user = validator.validateRegisterForm(req);
-            userRepository.save(user);
-            authManager.signIn(req, resp, userRepository.findByEmail(user.getEmail()).get());
-            resp.sendRedirect(contextPath + "/account");
-            return false;
-        } catch (ValidationException e) {
-            req.setAttribute(Constants.ERROR, e.getMessage());
-            return true;
-        }
+    public boolean isAdmin(HttpServletRequest req) {
+        return authManager.isAdmin(req);
+    }
+
+    @Override
+    public void signIn(HttpServletRequest req, HttpServletResponse resp) throws ValidationException {
+        UserModel user = validator.validateSignInForm(req);
+        authManager.signIn(req, resp, user);
+    }
+
+    @Override
+    public void register(HttpServletRequest req, HttpServletResponse resp) throws ValidationException {
+        UserModel user = validator.validateRegisterForm(req);
+        userRepository.save(user);
+        authManager.signIn(req, resp, userRepository.findByEmail(user.getEmail()).get());
     }
 }

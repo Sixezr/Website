@@ -1,13 +1,9 @@
 package semestrovka.controllers;
 
-import semestrovka.module.entities.ProductModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.helpers.Validator;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
-import semestrovka.module.repositories.ProductRepository;
-import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
+import semestrovka.module.services.ICartService;
+import semestrovka.module.services.ISecurityService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -25,21 +21,19 @@ import java.io.IOException;
 public class MenuAddingServlet extends HttpServlet {
 
     private ServletContext context;
-    private IAuthManager authManager;
-    private Validator validator;
-    private ProductRepository productRepository;
+    private ISecurityService securityService;
+    private ICartService cartService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepositoryJdbcImpl) context.getAttribute(Constants.PRODUCT_REPOSITORY);
-        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
-        validator = (Validator) context.getAttribute(Constants.VALIDATOR);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
+        cartService = (ICartService) context.getAttribute(Constants.CART_SERVICE);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (authManager.isAdmin(req)) {
+        if (securityService.isAdmin(req)) {
             context.getRequestDispatcher("/WEB-INF/views/adding.jsp").forward(req, resp);
         } else {
             context.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
@@ -48,10 +42,9 @@ public class MenuAddingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (authManager.isAdmin(req)) {
+        if (securityService.isAdmin(req)) {
             try {
-                ProductModel productModel = validator.validateAddingForm(req);
-                productRepository.save(productModel);
+                cartService.saveProduct(req);
             } catch (ValidationException e) {
                 req.setAttribute(Constants.ERROR, e.getMessage());
             }

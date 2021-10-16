@@ -162,8 +162,7 @@ public class Validator extends AbstractValidator {
             throw new InvalidEmailException("Неверный формат email");
         }
 
-        UserModel user = isRightData(email, pass);
-        return user;
+        return isRightData(email, pass);
     }
 
     public UserModel validateRegisterForm(HttpServletRequest req) {

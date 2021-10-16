@@ -1,12 +1,7 @@
 package semestrovka.controllers;
 
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
-import semestrovka.module.repositories.CartRepository;
-import semestrovka.module.repositories.CartRepositoryJdbcImpl;
-import semestrovka.module.repositories.UserRepositoryJdbcImp;
-import semestrovka.module.repositories.UserRepository;
+import semestrovka.module.services.ICartService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -21,16 +16,12 @@ import java.io.IOException;
 public class CartServlet extends HttpServlet {
 
     private ServletContext context;
-    private UserRepository userRepository;
-    private CartRepository cartRepository;
-    private IAuthManager authManager;
+    private ICartService cartService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        userRepository = (UserRepositoryJdbcImp) context.getAttribute(Constants.USER_REPOSITORY);
-        cartRepository = (CartRepositoryJdbcImpl) context.getAttribute(Constants.CART_REPOSITORY);
-        authManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        cartService = (ICartService) context.getAttribute(Constants.CART_SERVICE);
     }
 
     @Override
@@ -41,9 +32,14 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String action = req.getParameter("action");
-        if (action.equals("clearAll")) {
-            authManager.getCart(req).clearCart();
-            cartRepository.removeAll(authManager.getUser(req).getId());
+        if (action != null) {
+            switch (action) {
+                case "clearAll":
+                    cartService.clearCart(req);
+                    break;
+                default:
+                    return;
+            }
         }
         context.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
     }

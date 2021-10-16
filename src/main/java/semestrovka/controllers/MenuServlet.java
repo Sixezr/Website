@@ -3,14 +3,8 @@ package semestrovka.controllers;
 import semestrovka.module.entities.CartModel;
 import semestrovka.module.entities.ProductModel;
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.managers.AbstractFileSystemManager;
-import semestrovka.module.managers.FileSystemManager;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
-import semestrovka.module.repositories.CartRepository;
-import semestrovka.module.repositories.CartRepositoryJdbcImpl;
-import semestrovka.module.repositories.ProductRepository;
-import semestrovka.module.repositories.ProductRepositoryJdbcImpl;
+import semestrovka.module.services.ICartService;
+import semestrovka.module.services.ISecurityService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -26,42 +20,37 @@ import java.util.Optional;
 public class MenuServlet extends HttpServlet {
 
     private ServletContext context;
-    private ProductRepository productRepository;
-    private CartRepository cartRepository;
-    private AbstractFileSystemManager fileSystemManager;
-    private IAuthManager authManager;
+    private ICartService cartService;
+    private ISecurityService securityService;
 
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        productRepository = (ProductRepository) context.getAttribute(Constants.PRODUCT_REPOSITORY);
-        fileSystemManager = (AbstractFileSystemManager) context.getAttribute(Constants.FILE_SYSTEM_MANAGER);
-        cartRepository = (CartRepository) context.getAttribute(Constants.CART_REPOSITORY);
-        authManager = (IAuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        cartService = (ICartService) context.getAttribute(Constants.CART_SERVICE);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        fileSystemManager.copyFilesToWeb(context.getContextPath());
-        req.getSession().setAttribute("products", productRepository.findAll());
+        req.getSession().setAttribute("products", cartService.findAll(context.getContextPath()));
         context.getRequestDispatcher("/WEB-INF/views/menu.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        if (authManager.isAuthenticated(req)) {
-            CartModel cartModel = authManager.getCart(req);
-            String productId = req.getParameter("product-id");
+        if (securityService.isAuthenticated(req)) {
+            CartModel cartModel = cartService.getCart(req);
+            String stringId = req.getParameter("product-id");
             int id;
             try {
-                id = Integer.parseInt(productId);
+                id = Integer.parseInt(stringId);
             } catch (NumberFormatException e) {
                 return;
             }
-            Optional<ProductModel> productModel = productRepository.findById(id);
+            Optional<ProductModel> productModel = cartService.findProductByI(id);
             if (productModel.isPresent()) {
                 cartModel.addProduct(productModel.get());
-                cartRepository.addProduct(authManager.getUser(req).getId(), id);
+                cartService.addProductToCart(req, id);
             }
             context.getRequestDispatcher("/WEB-INF/views/menu.jsp").forward(req, resp);
         } else {

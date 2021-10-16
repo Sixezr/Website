@@ -1,8 +1,7 @@
 package semestrovka.module.filters;
 
 import semestrovka.module.helpers.Constants;
-import semestrovka.module.managers.IAuthManager;
-import semestrovka.module.managers.AuthManager;
+import semestrovka.module.services.ISecurityService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -14,13 +13,13 @@ import java.io.IOException;
 public class AuthFilter implements Filter {
 
     private ServletContext context;
-    private IAuthManager sessionManager;
+    private ISecurityService securityService;
     private String[] unprotected;
 
     @Override
     public void init(FilterConfig filterConfig) {
         context = filterConfig.getServletContext();
-        sessionManager = (AuthManager) context.getAttribute(Constants.AUTH_MANAGER);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
         unprotected = new String[]{context.getContextPath() + "/menu"};
     }
 
@@ -30,19 +29,19 @@ public class AuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         boolean flag = true;
 
-        if (sessionManager.isAuthenticated(request)) {
+        if (securityService.isAuthenticated(request)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
         for (String element : unprotected) {
             if (request.getRequestURI().equals(element)) {
-                sessionManager.authenticate(request);
+                securityService.authenticate(request);
                 flag = !flag;
             }
         }
 
-        if (flag && !sessionManager.authenticate(request)) {
+        if (flag && !securityService.authenticate(request)) {
             response.sendRedirect(context.getContextPath() + "/login");
             return;
         }

@@ -9,5 +9,5 @@ public interface ICustomProductCollection<T> extends Collection<T> {
 
     double getCurrentPriceForProducts();
 
-    boolean removeProductById(int id);
+    void removeProductById(int id);
 }
