@@ -32,7 +32,7 @@ public class Validator extends AbstractValidator {
         try {
             price = Double.parseDouble(stringPrice.replaceAll(",", "."));
         } catch (NumberFormatException e) {
-            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр");
+            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр", e);
         }
         String photo = fileSystemManager.downloadFile(req);
 
@@ -71,12 +71,12 @@ public class Validator extends AbstractValidator {
         try {
             price = Double.parseDouble(stringPrice.replaceAll(",", "."));
         } catch (NumberFormatException e) {
-            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр");
+            throw new InvalidPriceException("Цена не должна содержать ничего, кроме цифр", e);
         }
         try {
             id = Integer.parseInt(stringId);
         } catch (NumberFormatException e) {
-            throw new ValidationException("ID должно быть числом");
+            throw new ValidationException("ID должно быть числом", e);
         }
         fileSystemManager.downloadNewFile(req, pictureName);
 
@@ -94,7 +94,7 @@ public class Validator extends AbstractValidator {
         try {
             return Integer.parseInt(stringId);
         } catch (NumberFormatException e) {
-            throw new UncorrectDataException("Id может быть только числом");
+            throw new UncorrectDataException("Id может быть только числом", e);
         }
     }
 

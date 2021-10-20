@@ -11,6 +11,24 @@ p.first-red::first-letter {
   content: "\20BD";
 }
 
+.account-form {
+  width: 35%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.product-form {
+  width: 45%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.register-form {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .album {
   background-color: #eeeeee;
 }
