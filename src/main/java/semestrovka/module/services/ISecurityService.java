@@ -14,5 +14,7 @@ public interface ISecurityService {
 
     void signIn(HttpServletRequest req, HttpServletResponse resp) throws ValidationException;
 
+    void signInWithoutToken(HttpServletRequest req) throws ValidationException;
+
     void register(HttpServletRequest req, HttpServletResponse resp) throws ValidationException;
 }

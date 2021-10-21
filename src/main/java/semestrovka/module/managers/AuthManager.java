@@ -63,10 +63,15 @@ public final class AuthManager implements IAuthManager {
     }
 
     public void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user) {
+        signInWithoutToken(req, user);
+        tokenManager.saveToken(resp, user.getToken());
+    }
+
+    @Override
+    public void signInWithoutToken(HttpServletRequest req, UserModel user) {
         req.getSession().setAttribute(Constants.USER, user);
         CartModel cartModel = cartRepository.findCart(user.getId());
         req.getSession().setAttribute(Constants.CART, cartModel);
-        tokenManager.saveToken(resp, user.getToken());
     }
 
     public void signOut(HttpServletRequest req, HttpServletResponse resp) {

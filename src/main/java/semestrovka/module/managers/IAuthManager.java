@@ -19,5 +19,7 @@ public interface IAuthManager {
 
     void signIn(HttpServletRequest req, HttpServletResponse resp, UserModel user);
 
+    void signInWithoutToken(HttpServletRequest req, UserModel user);
+
     void signOut(HttpServletRequest req, HttpServletResponse resp);
 }

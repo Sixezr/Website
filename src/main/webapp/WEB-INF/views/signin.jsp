@@ -14,13 +14,16 @@
         <label for="pass" class="form-label">Password</label>
         <input name="pass" type="password" class="form-control" id="pass" required>
       </div>
+      <div>
+        <input type="checkbox" id="remember" name="remember">
+        <label for="remember">Запомнить меня</label>
+      </div>
       <div><a href="<c:url value="/register"/>" id="register-href">Нет аккаунта? Создайте его!</a></div>
 
       <c:if test="${error != null}">
         <div id="error">${error}</div>
       </c:if>
-
-      <button type="submit" class="submit-button">Отправить</button>
+      <button type="submit" class="submit-button">Войти</button>
     </form>
   </div>
 </t:mainLayout>

@@ -37,7 +37,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            securityService.signIn(req, resp);
+            if (req.getParameter("remember") != null) {
+                securityService.signIn(req, resp);
+            } else {
+                securityService.signInWithoutToken(req);
+            }
             resp.sendRedirect(context.getContextPath() + "/account");
             return;
         } catch (ValidationException e) {
