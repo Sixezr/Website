@@ -22,7 +22,14 @@
             <td>${product.getName()}</td>
             <td><span class="price">${cart.getProducts().getCurrentPriceForProducts()}</span></td>
             <td>${cart.getProducts().getCurrentProductCount()}</td>
-            <td>+ -</td>
+            <form method="post">
+                <input name="product_id" value="${product.getId()}" hidden>
+                <td>
+                    <button type="submit" class="btn btn-outline-success" name="action" value="add">+</button>
+                    <button type="submit" class="btn btn-outline-danger" name="action" value="remove">-</button>
+                </td>
+            </form>
+
         </tr>
     </c:forEach>
     </tbody>

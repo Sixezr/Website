@@ -1,7 +1,6 @@
 package semestrovka.controllers;
 
-import semestrovka.module.entities.CartModel;
-import semestrovka.module.entities.ProductModel;
+import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.Constants;
 import semestrovka.module.services.ICartService;
 import semestrovka.module.services.ISecurityService;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet("/menu")
 public class MenuServlet extends HttpServlet {
@@ -39,18 +37,10 @@ public class MenuServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         if (securityService.isAuthenticated(req)) {
-            CartModel cartModel = cartService.getCart(req);
-            String stringId = req.getParameter("product-id");
-            int id;
             try {
-                id = Integer.parseInt(stringId);
-            } catch (NumberFormatException e) {
+                cartService.addProductToCart(req);
+            } catch (ValidationException e) {
                 return;
-            }
-            Optional<ProductModel> productModel = cartService.findProductByI(id);
-            if (productModel.isPresent()) {
-                cartModel.addProduct(productModel.get());
-                cartService.addProductToCart(req, id);
             }
             context.getRequestDispatcher("/WEB-INF/views/menu.jsp").forward(req, resp);
         } else {

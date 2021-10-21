@@ -10,7 +10,7 @@ public interface IValidator {
 
     ProductModel validateChangeProductForm(HttpServletRequest req);
 
-    int validateChangeProductRequest(HttpServletRequest req);
+    int validateIdOfProductReq(HttpServletRequest req);
 
     UserModel validateChangeDataForm(HttpServletRequest req, UserModel user);
 

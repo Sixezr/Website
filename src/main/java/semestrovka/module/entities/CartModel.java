@@ -27,9 +27,9 @@ public class CartModel {
     }
 
     public void removeProduct(ProductModel productModel) {
-        cart.remove(productModel);
-        products.remove(productModel);
-        price -= productModel.getPrice();
+        if (cart.remove(productModel) && products.remove(productModel)) {
+            price -= productModel.getPrice();
+        }
     }
 
     public void removeProductById(int id) {

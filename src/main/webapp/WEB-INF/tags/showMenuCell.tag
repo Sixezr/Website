@@ -10,7 +10,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <form method="POST">
-                        <button type="submit" class="btn btn-sm btn-outline-secondary" name="product-id" value="${product.getId()}">В корзину</button>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary" name="product_id" value="${product.getId()}">В корзину</button>
                     </form>
                     <c:if test="${user.isAdmin()}">
                         <form action="<c:url value="/menu/change"/>">

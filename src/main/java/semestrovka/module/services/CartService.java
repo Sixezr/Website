@@ -35,18 +35,8 @@ public final class CartService implements ICartService {
     }
 
     @Override
-    public CartModel getCart(HttpServletRequest req) {
-        return authManager.getCart(req);
-    }
-
-    @Override
-    public Optional<ProductModel> findProductByI(int id) {
-        return productRepository.findById(id);
-    }
-
-    @Override
     public void setUpDataOfProduct(HttpServletRequest req) throws ValidationException {
-        int id = validator.validateChangeProductRequest(req);
+        int id = validator.validateIdOfProductReq(req);
         Optional<ProductModel> productModel = productRepository.findById(id);
         if (!productModel.isPresent()) {
             throw new ValidationException();
@@ -58,8 +48,25 @@ public final class CartService implements ICartService {
     }
 
     @Override
-    public void addProductToCart(HttpServletRequest req, int id) {
-        cartRepository.addProduct(authManager.getUser(req).getId(), id);
+    public void addProductToCart(HttpServletRequest req) {
+        int id = validator.validateIdOfProductReq(req);
+        Optional<ProductModel> productModel = productRepository.findById(id);
+        if (productModel.isPresent()) {
+            CartModel cartModel = authManager.getCart(req);
+            cartModel.addProduct(productModel.get());
+            cartRepository.addProduct(authManager.getUser(req).getId(), id);
+        }
+    }
+
+    @Override
+    public void removeProductFromCart(HttpServletRequest req) {
+        int id = validator.validateIdOfProductReq(req);
+        Optional<ProductModel> productModel = productRepository.findById(id);
+        if (productModel.isPresent()) {
+            CartModel cartModel = authManager.getCart(req);
+            cartModel.removeProduct(productModel.get());
+            cartRepository.removeProduct(authManager.getUser(req).getId(), id);
+        }
     }
 
     @Override

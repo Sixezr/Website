@@ -86,7 +86,7 @@ public class Validator extends AbstractValidator {
     }
 
     @Override
-    public int validateChangeProductRequest(HttpServletRequest req) {
+    public int validateIdOfProductReq(HttpServletRequest req) {
         String stringId = req.getParameter("product_id");
         if (stringId == null) {
             throw new EmptyParametrException("Пустой id");

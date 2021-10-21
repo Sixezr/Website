@@ -37,6 +37,12 @@ public class CartServlet extends HttpServlet {
                 case "clearAll":
                     cartService.clearCart(req);
                     break;
+                case "add":
+                    cartService.addProductToCart(req);
+                    break;
+                case "remove":
+                    cartService.removeProductFromCart(req);
+                    break;
                 default:
                     return;
             }
