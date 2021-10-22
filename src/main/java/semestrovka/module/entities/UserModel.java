@@ -26,6 +26,8 @@ public class UserModel {
         this.id = id;
     }
 
+    public UserModel() {}
+
     public int getId() {
         return id;
     }

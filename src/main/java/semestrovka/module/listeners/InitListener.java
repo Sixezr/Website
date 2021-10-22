@@ -3,6 +3,8 @@ package semestrovka.module.listeners;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import semestrovka.module.helpers.Constants;
+import semestrovka.module.helpers.IParser;
+import semestrovka.module.helpers.Parser;
 import semestrovka.module.helpers.Validator;
 import semestrovka.module.managers.*;
 import semestrovka.module.repositories.*;
@@ -44,13 +46,17 @@ public class InitListener implements ServletContextListener {
         ITokenManager tokenManager = new TokenManager();
         IAuthManager authManager = new AuthManager(userRepository, tokenManager, cartRepository);
         Validator validator = new Validator(userRepository, fileSystemManager, tokenManager);
+        INetworkManager networkManager = new NetworkManager();
+        IParser parser = new Parser();
 
         IProfileService profileService = new ProfileService(authManager, validator, userRepository);
         ISecurityService securityService = new SecurityService(authManager, validator, userRepository);
         ICartService cartService = new CartService(authManager, cartRepository, productRepository, fileSystemManager, validator);
+        IVkService vkService = new VkService(networkManager, parser, userRepository);
 
         servletContext.setAttribute(Constants.PROFILE_SERVICE, profileService);
-        servletContext.setAttribute(Constants.SECUTRITY_SERVICE, securityService);
+        servletContext.setAttribute(Constants.SECURITY_SERVICE, securityService);
         servletContext.setAttribute(Constants.CART_SERVICE, cartService);
+        servletContext.setAttribute(Constants.VK_SERVICE, vkService);
     }
 }

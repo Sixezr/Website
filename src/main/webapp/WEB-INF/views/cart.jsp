@@ -1,6 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib tagdir="/WEB-INF/tags" prefix="t"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib tagdir="/WEB-INF/tags" prefix="t" %>
 
 <t:mainLayout title="Моя Корзина">
     <div class="container">
@@ -14,7 +14,8 @@
             </div>
         </c:if>
         <c:if test="${cart.getProducts().isEmpty()}">
-            <p class="fs-1 fst-italic">Корзина пуста, вперед к покупкам <img src="<c:url value="/img/logo.png"/>" width="100" height="100" alt="logo"></p>
+            <p class="fs-1 fst-italic">Корзина пуста, вперед к покупкам <img src="<c:url value="/img/logo.png"/>"
+                                                                             width="100" height="100" alt="logo"></p>
         </c:if>
     </div>
 </t:mainLayout>

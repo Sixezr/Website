@@ -42,6 +42,11 @@ public final class SecurityService implements ISecurityService {
     }
 
     @Override
+    public void signIn(HttpServletRequest req, UserModel user) {
+        authManager.signInWithoutToken(req, user);
+    }
+
+    @Override
     public void signInWithoutToken(HttpServletRequest req) throws ValidationException {
         UserModel user = validator.validateSignInForm(req);
         authManager.signInWithoutToken(req, user);

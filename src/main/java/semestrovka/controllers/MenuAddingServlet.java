@@ -27,7 +27,7 @@ public class MenuAddingServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         context = config.getServletContext();
-        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECURITY_SERVICE);
         cartService = (ICartService) context.getAttribute(Constants.CART_SERVICE);
     }
 

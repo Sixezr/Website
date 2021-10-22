@@ -9,7 +9,7 @@ import semestrovka.module.repositories.UserRepository;
 import javax.servlet.http.HttpServletRequest;
 
 
-public class Validator extends AbstractValidator {
+public final class Validator extends AbstractValidator {
 
     public Validator(UserRepository userRepository, AbstractFileSystemManager fileSystemManager, ITokenManager tokenManager) {
         super(userRepository, fileSystemManager, tokenManager);
@@ -119,9 +119,11 @@ public class Validator extends AbstractValidator {
         phoneNumber = phoneNumber.trim();
         pass = pass.trim();
 
-        if (user.getName().equals(name) && user.getSecondName().equals(secondName)
-                && user.getPhoneNumber().equals(phoneNumber) && user.getPass().equals(pass)) {
-            throw new EqualDataException("Нечего изменить");
+        if (user.getEmail() != null && user.getPass() != null) {
+            if (user.getName().equals(name) && user.getSecondName().equals(secondName)
+                    && user.getPhoneNumber().equals(phoneNumber) && user.getPass().equals(pass)) {
+                throw new EqualDataException("Нечего изменить");
+            }
         }
         if (!isValidName(name)) {
             throw new InvalidNameException("Имя должно содержать только буквы, а размер не более 12 и не менее 2");

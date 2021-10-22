@@ -19,7 +19,7 @@ public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         context = filterConfig.getServletContext();
-        securityService = (ISecurityService) context.getAttribute(Constants.SECUTRITY_SERVICE);
+        securityService = (ISecurityService) context.getAttribute(Constants.SECURITY_SERVICE);
         unprotected = new String[]{context.getContextPath() + "/menu"};
     }
 

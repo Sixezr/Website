@@ -1,6 +1,6 @@
-<%@tag description="Default Layout Tag" pageEncoding="UTF-8"%>
-<%@attribute name="products" type="semestrovka.module.collestions.CustomProductCollections" required="true"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@tag description="Default Layout Tag" pageEncoding="UTF-8" %>
+<%@attribute name="products" type="semestrovka.module.collestions.CustomProductCollections" required="true" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <table class="table">
     <thead>
@@ -11,7 +11,8 @@
         <th scope="col">Количество</th>
         <th scope="col">Действие</th>
         <form method="POST">
-            <button type="submit" class="btn btn-outline-danger" name="action" value="clearAll">Очистить корзину</button>
+            <button type="submit" class="btn btn-outline-danger" name="action" value="clearAll">Очистить корзину
+            </button>
         </form>
     </tr>
     </thead>

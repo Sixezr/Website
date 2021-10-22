@@ -1,5 +1,6 @@
 package semestrovka.module.services;
 
+import semestrovka.module.entities.UserModel;
 import semestrovka.module.exceptions.ValidationException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ public interface ISecurityService {
     boolean isAdmin(HttpServletRequest req);
 
     void signIn(HttpServletRequest req, HttpServletResponse resp) throws ValidationException;
+
+    void signIn(HttpServletRequest req, UserModel user);
 
     void signInWithoutToken(HttpServletRequest req) throws ValidationException;
 
