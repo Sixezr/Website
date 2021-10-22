@@ -6,18 +6,21 @@ import semestrovka.module.managers.AbstractFileSystemManager;
 import semestrovka.module.managers.ITokenManager;
 import semestrovka.module.repositories.UserRepository;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 public abstract class AbstractValidator implements IValidator {
     protected static final String OK = "ok";
-    protected static final String NAME_PARAMETR = "name";
-    protected static final String SECOND_NAME_PARAMETR = "second-name";
-    protected static final String PHONE_PARAMETR = "phone-number";
-    protected static final String EMAIL_PARAMETR = "email";
-    protected static final String PASS_PARAMETR = "pass";
-    protected static final String PRICE_PARAMETR = "price";
-    protected static final String PICTURE_NAME_PARAMETR = "picture";
-    protected static final String ID_PARAMETR = "id";
+    protected static final String NAME_PARAMETER = "name";
+    protected static final String SECOND_NAME_PARAMETER = "second-name";
+    protected static final String PHONE_PARAMETER = "phone-number";
+    protected static final String EMAIL_PARAMETER = "email";
+    protected static final String PASS_PARAMETER = "pass";
+    protected static final String PRICE_PARAMETER = "price";
+    protected static final String PICTURE_NAME_PARAMETER = "picture";
+    protected static final String ID_PARAMETER = "id";
 
     private static final String EMAIL_REG = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])";
 
@@ -45,7 +48,7 @@ public abstract class AbstractValidator implements IValidator {
         return phone.matches("^\\p{Digit}+$");
     }
 
-    protected boolean isEmailUnvailable(String email) {
+    protected boolean isEmailUnavailable(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
@@ -55,7 +58,7 @@ public abstract class AbstractValidator implements IValidator {
             throw new UncorrectDataException("Неверный пароль или email");
         }
         UserModel user = optionalUser.get();
-        if (user.getEmail().equals(email) && user.getPass().equals(pass)) {
+        if (user.getEmail().equals(email) && user.getPass().equals(md5Custom(pass))) {
             return user;
         }
         throw new UncorrectDataException("Неверный пароль или email");
@@ -67,5 +70,28 @@ public abstract class AbstractValidator implements IValidator {
 
     protected boolean isEmailValid(String email) {
         return email.matches(EMAIL_REG);
+    }
+
+    protected String md5Custom(String st) {
+        MessageDigest messageDigest;
+        byte[] digest = new byte[0];
+
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.reset();
+            messageDigest.update(st.getBytes());
+            digest = messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        BigInteger bigInt = new BigInteger(1, digest);
+        String md5Hex = bigInt.toString(16);
+
+        while (md5Hex.length() < 32) {
+            md5Hex = "0" + md5Hex;
+        }
+
+        return md5Hex;
     }
 }

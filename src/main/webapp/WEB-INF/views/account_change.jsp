@@ -15,8 +15,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <input type="password" name="pass" class="form-control" placeholder="Password"
-                       value="${user.getPass()}">
+                <input type="password" name="pass" class="form-control" placeholder="New password">
             </div>
             <div class="col">
                 <input type="text" name="phone-number" class="form-control" placeholder="Номер телефона"

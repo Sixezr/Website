@@ -16,8 +16,8 @@ public final class Validator extends AbstractValidator {
     }
 
     public ProductModel validateAddingForm(HttpServletRequest req) {
-        String name = req.getParameter(NAME_PARAMETR);
-        String stringPrice = req.getParameter(PRICE_PARAMETR);
+        String name = req.getParameter(NAME_PARAMETER);
+        String stringPrice = req.getParameter(PRICE_PARAMETER);
 
         if (name == null) {
             throw new EmptyParametrException("Название не может быть пустым");
@@ -42,15 +42,15 @@ public final class Validator extends AbstractValidator {
 
     @Override
     public ProductModel validateChangeProductForm(HttpServletRequest req) {
-        String stringId = req.getParameter(ID_PARAMETR);
-        String name = req.getParameter(NAME_PARAMETR);
-        String stringPrice = req.getParameter(PRICE_PARAMETR);
-        String pictureName = req.getParameter(PICTURE_NAME_PARAMETR);
+        String stringId = req.getParameter(ID_PARAMETER);
+        String name = req.getParameter(NAME_PARAMETER);
+        String stringPrice = req.getParameter(PRICE_PARAMETER);
+        String pictureName = req.getParameter(PICTURE_NAME_PARAMETER);
 
-        req.setAttribute(PRICE_PARAMETR, stringPrice);
-        req.setAttribute(NAME_PARAMETR, name);
-        req.setAttribute(ID_PARAMETR, stringId);
-        req.setAttribute(PICTURE_NAME_PARAMETR, pictureName);
+        req.setAttribute(PRICE_PARAMETER, stringPrice);
+        req.setAttribute(NAME_PARAMETER, name);
+        req.setAttribute(ID_PARAMETER, stringId);
+        req.setAttribute(PICTURE_NAME_PARAMETER, pictureName);
 
         if (name == null) {
             throw new EmptyParametrException("Название не может быть пустым");
@@ -99,10 +99,10 @@ public final class Validator extends AbstractValidator {
     }
 
     public UserModel validateChangeDataForm(HttpServletRequest req, UserModel user) {
-        String name = req.getParameter(NAME_PARAMETR);
-        String secondName = req.getParameter(SECOND_NAME_PARAMETR);
-        String phoneNumber = req.getParameter(PHONE_PARAMETR);
-        String pass = req.getParameter(PASS_PARAMETR);
+        String name = req.getParameter(NAME_PARAMETER);
+        String secondName = req.getParameter(SECOND_NAME_PARAMETER);
+        String phoneNumber = req.getParameter(PHONE_PARAMETER);
+        String pass = req.getParameter(PASS_PARAMETER);
 
         if (name == null) {
             throw new EmptyParametrException("Имя не может быть пустым");
@@ -111,7 +111,7 @@ public final class Validator extends AbstractValidator {
         } else if (phoneNumber == null) {
             throw new EmptyParametrException("Номер телефона не может быть пустым");
         } else if (pass == null) {
-            throw new EmptyParametrException("Password не может быть пустым");
+            throw new EmptyParametrException("Пароль не может быть пустым");
         }
 
         name = name.trim();
@@ -134,21 +134,23 @@ public final class Validator extends AbstractValidator {
         if (!isValidPhoneNumber(phoneNumber)) {
             throw new InvalidPhoneNumberException("Неверный формат номера телефона");
         }
-        if (!isValidPass(pass)) {
+        if (!pass.isEmpty() && !isValidPass(pass)) {
             throw new WeakPasswordExceptions("Минимальная длина пароля - 8 символов");
         }
 
         user.setName(name);
         user.setSecondName(secondName);
         user.setPhoneNumber(phoneNumber);
-        user.setPass(pass);
+        if (!pass.isEmpty()) {
+            user.setPass(md5Custom(pass));
+        }
         req.setAttribute(OK, "Ваши данные изменены");
         return user;
     }
 
     public UserModel validateSignInForm(HttpServletRequest req) {
-        String email = req.getParameter(EMAIL_PARAMETR);
-        String pass = req.getParameter(PASS_PARAMETR);
+        String email = req.getParameter(EMAIL_PARAMETER);
+        String pass = req.getParameter(PASS_PARAMETER);
 
         req.setAttribute("repeated_email", email);
         if (email == null) {
@@ -168,11 +170,11 @@ public final class Validator extends AbstractValidator {
     }
 
     public UserModel validateRegisterForm(HttpServletRequest req) {
-        String name = req.getParameter(NAME_PARAMETR);
-        String secondName = req.getParameter(SECOND_NAME_PARAMETR);
-        String phoneNumber = req.getParameter(PHONE_PARAMETR);
-        String email = req.getParameter(EMAIL_PARAMETR);
-        String pass = req.getParameter(PASS_PARAMETR);
+        String name = req.getParameter(NAME_PARAMETER);
+        String secondName = req.getParameter(SECOND_NAME_PARAMETER);
+        String phoneNumber = req.getParameter(PHONE_PARAMETER);
+        String email = req.getParameter(EMAIL_PARAMETER);
+        String pass = req.getParameter(PASS_PARAMETER);
 
         req.setAttribute("repeated_name", name);
         req.setAttribute("repeated_s_name", secondName);
@@ -212,11 +214,11 @@ public final class Validator extends AbstractValidator {
         if (!isEmailValid(email)) {
             throw new InvalidEmailException("Неверный формат email");
         }
-        if (isEmailUnvailable(email)) {
+        if (isEmailUnavailable(email)) {
             throw new UnvailableEmailException("Данный email уже ипользуется");
         }
 
-        UserModel user = new UserModel(name, secondName, email, pass, phoneNumber);
+        UserModel user = new UserModel(name, secondName, email, md5Custom(pass), phoneNumber);
         user.setToken(tokenManager.generateToken());
         return user;
     }
