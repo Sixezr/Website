@@ -25,7 +25,10 @@
             </c:if>
             <input name="id" value="${id}" hidden>
             <input name="picture" value="${picture}" hidden>
-            <input type="submit" value="Изменить">
+            <div>
+                <button type="submit" name="action" value="change" class="btn btn-outline-secondary">Изменить</button>
+                <button type="submit" name="action" value="delete" class="btn btn-outline-danger">Удалить товар</button>
+            </div>
         </div>
     </form>
 </t:mainLayout>

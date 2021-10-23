@@ -38,11 +38,12 @@ public class AuthFilter implements Filter {
             if (request.getRequestURI().equals(element)) {
                 securityService.authenticate(request);
                 flag = !flag;
+                break;
             }
         }
 
         if (flag && !securityService.authenticate(request)) {
-            response.sendRedirect(context.getContextPath() + "/login");
+            response.sendRedirect(context.getContextPath() + "/login?redirect="+request.getRequestURI());
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

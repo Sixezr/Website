@@ -42,7 +42,12 @@ public class LoginServlet extends HttpServlet {
             } else {
                 securityService.signInWithoutToken(req);
             }
-            resp.sendRedirect(context.getContextPath() + "/account");
+            String redirect = req.getParameter(Constants.REDIRECT);
+            if (redirect != null) {
+                resp.sendRedirect(redirect);
+            } else {
+                resp.sendRedirect(context.getContextPath() + "/account");
+            }
             return;
         } catch (ValidationException e) {
             req.setAttribute(Constants.ERROR, e.getMessage());

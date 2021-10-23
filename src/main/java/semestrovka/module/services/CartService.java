@@ -76,6 +76,13 @@ public final class CartService implements ICartService {
     }
 
     @Override
+    public void removeProduct(HttpServletRequest req) throws  ValidationException {
+        ProductModel productModel = validator.validateChangeProductForm(req);
+        productRepository.deleteById(productModel.getId());
+        fileSystemManager.deleteFiles(productModel.getPicture(), req.getContextPath());
+    }
+
+    @Override
     public void saveProduct(HttpServletRequest req) throws ValidationException {
         ProductModel productModel = validator.validateAddingForm(req);
         productRepository.save(productModel);

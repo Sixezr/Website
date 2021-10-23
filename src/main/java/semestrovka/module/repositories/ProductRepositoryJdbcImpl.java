@@ -29,6 +29,9 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
     //language=SQL
     private static final String SQL_UPDATE_PRODUCT = "update product set name = ?, price = ? where id = ?";
 
+    //language=SQL
+    private static final String SQL_DELETE_PRODUCT_BY_ID = "delete from product where id = ?";
+
     private final DataSource dataSource;
 
     private final Function<ResultSet, ProductModel> accountRowMapper = row -> {
@@ -60,6 +63,17 @@ public final class ProductRepositoryJdbcImpl implements ProductRepository {
             } else {
                 return Optional.empty();
             }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(SQL_DELETE_PRODUCT_BY_ID)) {
+            statement.setLong(1, id);
+            statement.execute();
         } catch (SQLException e) {
             throw new IllegalArgumentException(e);
         }

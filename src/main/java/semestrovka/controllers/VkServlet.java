@@ -33,13 +33,13 @@ public class VkServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String code = req.getParameter("code");
         if (code == null) {
-            resp.sendRedirect("https://oauth.vk.com/authorize?client_id=7981542&display=page&redirect_uri=http://localhost:8080"+context.getContextPath()+"/vk&scope=email&response_type=code&v=5.131");
+            resp.sendRedirect("https://oauth.vk.com/authorize?client_id=7981542&display=page&redirect_uri=http://localhost:8080" + context.getContextPath() + "/vk&scope=email&response_type=code&v=5.131");
             return;
         }
         try {
             UserModel user = vkService.getUser(code);
             securityService.signIn(req, user);
-            resp.sendRedirect(context.getContextPath()+"/account");
+            resp.sendRedirect(context.getContextPath() + "/account");
         } catch (ValidationException e) {
             req.setAttribute(Constants.ERROR, e.getMessage());
             context.getRequestDispatcher("/WEB-INF/views/vk.jsp").forward(req, resp);

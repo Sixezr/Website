@@ -72,7 +72,7 @@ public final class FileSystemManager extends AbstractFileSystemManager {
         }
     }
 
-    private void deleteFiles(String name, String context) {
+    public void deleteFiles(String name, String context) {
         File file = new File(PATH_TO_UPLOADS + name);
         file.delete();
         file = new File(PATH_TO_WEB + context + PATH_TO_IMG_IN_WEB + name);

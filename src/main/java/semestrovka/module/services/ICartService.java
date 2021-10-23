@@ -15,6 +15,8 @@ public interface ICartService {
 
     void removeProductFromCart(HttpServletRequest req);
 
+    void removeProduct(HttpServletRequest req) throws  ValidationException;
+
     void updateProduct(HttpServletRequest req) throws ValidationException;
 
     void saveProduct(HttpServletRequest req) throws ValidationException;

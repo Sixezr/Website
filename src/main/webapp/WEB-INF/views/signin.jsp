@@ -16,6 +16,7 @@
                 <input name="pass" type="password" class="form-control" id="pass" required>
             </div>
             <div>
+                <input type="text" name="redirect" value="${redirect}" hidden>
                 <input type="checkbox" id="remember" name="remember">
                 <label for="remember">Запомнить меня</label>
             </div>

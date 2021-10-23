@@ -48,7 +48,17 @@ public class ChangeProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (securityService.isAdmin(req)) {
             try {
-                cartService.updateProduct(req);
+                String action = req.getParameter("action");
+                switch (action) {
+                    case "change":
+                        cartService.updateProduct(req);
+                        break;
+                    case "delete":
+                        cartService.removeProduct(req);
+                        break;
+                    default:
+                        break;
+                }
             } catch (ValidationException e) {
                 req.setAttribute(Constants.ERROR, e.getMessage());
             }

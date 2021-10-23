@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface ProductRepository extends Repository<ProductModel> {
     Optional<ProductModel> findByName(String name);
+    void deleteById(int id);
 }
