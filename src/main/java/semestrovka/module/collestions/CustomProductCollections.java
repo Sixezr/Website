@@ -9,8 +9,8 @@ import java.util.List;
 
 public class CustomProductCollections implements ICustomProductCollection<ProductModel> {
 
-    private List<ProductModel> products;
-    private List<Integer> counterOfProducts;
+    private final List<ProductModel> products;
+    private final List<Integer> counterOfProducts;
     private int size;
     private int collectionCursor;
 
