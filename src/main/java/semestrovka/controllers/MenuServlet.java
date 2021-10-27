@@ -44,7 +44,7 @@ public class MenuServlet extends HttpServlet {
             }
             context.getRequestDispatcher("/WEB-INF/views/menu.jsp").forward(req, resp);
         } else {
-            resp.sendRedirect(context.getContextPath() + "/login?redirect=" + req.getRequestURI());
+            resp.sendError(300, "Необходимо войти");
         }
     }
 }

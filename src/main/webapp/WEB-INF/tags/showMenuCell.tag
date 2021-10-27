@@ -10,14 +10,16 @@
             <p>${product.getName()}</p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                    <form method="POST">
-                        <button type="submit" class="btn btn-sm btn-outline-secondary" name="product_id"
-                                value="${product.getId()}">В корзину
+                    <form class="add-product-from" method="POST">
+                        <input name="product_id" value="${product.getId()}" hidden>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary" name="action"
+                                value="add">В корзину
                         </button>
                     </form>
                     <c:if test="${user.isAdmin()}">
                         <form action="<c:url value="/menu/change"/>">
-                            <button type="submit" name="product_id" value="${product.getId()}"
+                            <input name="product_id" value="${product.getId()}" hidden>
+                            <button type="submit" name="action" value="change"
                                     class="btn btn-sm btn-outline-secondary">Изменить
                             </button>
                         </form>

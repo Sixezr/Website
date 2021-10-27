@@ -25,4 +25,6 @@
             </c:if>
         </div>
     </div>
+    <script>context = "${pageContext.request.contextPath}"</script>
+    <script src="<c:url value="/js/scripts.js"/>"></script>
 </t:mainLayout>
