@@ -52,7 +52,7 @@ public class InitListener implements ServletContextListener {
         IProfileService profileService = new ProfileService(authManager, validator, userRepository);
         ISecurityService securityService = new SecurityService(authManager, validator, userRepository);
         ICartService cartService = new CartService(authManager, cartRepository, productRepository, fileSystemManager, validator);
-        IVkService vkService = new VkService(networkManager, parser, userRepository);
+        IVkService vkService = new VkService(networkManager, parser, userRepository, tokenManager);
 
         servletContext.setAttribute(Constants.PROFILE_SERVICE, profileService);
         servletContext.setAttribute(Constants.SECURITY_SERVICE, securityService);

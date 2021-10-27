@@ -3,6 +3,7 @@ package semestrovka.module.services;
 import semestrovka.module.entities.UserModel;
 import semestrovka.module.helpers.IParser;
 import semestrovka.module.managers.INetworkManager;
+import semestrovka.module.managers.ITokenManager;
 import semestrovka.module.repositories.UserRepository;
 
 import java.util.Map;
@@ -12,11 +13,13 @@ public final class VkService implements IVkService {
     private final INetworkManager networkManager;
     private final IParser parser;
     private final UserRepository userRepository;
+    private final ITokenManager tokenManager;
 
-    public VkService(INetworkManager networkManager, IParser parser, UserRepository userRepository) {
+    public VkService(INetworkManager networkManager, IParser parser, UserRepository userRepository, ITokenManager tokenManager) {
         this.networkManager = networkManager;
         this.parser = parser;
         this.userRepository = userRepository;
+        this.tokenManager = tokenManager;
     }
 
     @Override
@@ -33,6 +36,7 @@ public final class VkService implements IVkService {
         Map<String, String> userName = parser.parseDataRequest(networkManager.getDataFromServer(userData.get("access_token"), userData.get("user_id")));
         user.setName(userName.get("first_name"));
         user.setSecondName(userName.get("last_name"));
+        user.setToken(tokenManager.generateToken());
         userRepository.save(user);
         user.setId(userRepository.findByEmail(user.getEmail()).get().getId());
         return user;

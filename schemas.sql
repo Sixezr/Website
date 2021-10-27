@@ -21,7 +21,7 @@ create table cart (
    user_id int,
    product_id int,
    count int check (count > 0) default 1,
-   foreign key (user_id) references "user" (id),
+   foreign key (user_id) references "user" (id) on delete cascade,
    foreign key (product_id) references product (id) on delete cascade,
    unique (user_id, product_id)
 );

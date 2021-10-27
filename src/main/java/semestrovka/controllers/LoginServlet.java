@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
                 securityService.signInWithoutToken(req);
             }
             String redirect = req.getParameter(Constants.REDIRECT);
-            if (redirect != null) {
+            if (redirect != null && !redirect.isEmpty()) {
                 resp.sendRedirect(redirect);
             } else {
                 resp.sendRedirect(context.getContextPath() + "/account");
