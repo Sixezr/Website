@@ -4,7 +4,9 @@
 
 <t:mainLayout title="VK">
     <c:if test="${error != null}">
-        <div id="error">${error}</div>
+        <div class="container">
+            <div id="error">${error}</div>
+        </div>
     </c:if>
 </t:mainLayout>
 

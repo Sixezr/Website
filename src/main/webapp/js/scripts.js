@@ -1,4 +1,11 @@
 function showNotification() {
+    function clearField() {
+        let notifications = document.querySelectorAll('#notification-field .notification');
+        if (notifications.length === 0) {
+            document.querySelector('#notification-field').remove();
+        }
+    }
+
     let notification = document.createElement('div');
     notification.innerText = "Добавлено в корзину";
     notification.classList.add("notification");
@@ -14,13 +21,6 @@ function showNotification() {
         notification.remove();
         clearField();
     }, 3000);
-}
-
-function clearField() {
-    let notifications = document.querySelectorAll('#notification-field .notification');
-    if (notifications.length === 0) {
-        document.querySelector('#notification-field').remove();
-    }
 }
 
 requestFunction = function (event) {

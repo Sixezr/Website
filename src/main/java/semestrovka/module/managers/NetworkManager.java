@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-public class NetworkManager implements INetworkManager {
+public final class NetworkManager implements INetworkManager {
     private static final String APP_ID = "7981542";
     private static final String PROTECTED_KEY = "1eee8i514XfC5qUVmLg7";
     private static final String CONTEXT = "sem";
