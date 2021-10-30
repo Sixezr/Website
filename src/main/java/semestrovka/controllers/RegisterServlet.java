@@ -31,14 +31,14 @@ public class RegisterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             securityService.register(req, resp);
             resp.sendRedirect(context.getContextPath() + "/account");
             return;
         } catch (ValidationException e) {
-            req.setAttribute(Constants.ERROR, e.getMessage());
+            req.getSession().setAttribute(Constants.ERROR, e.getMessage());
         }
-        context.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+        resp.sendRedirect(context.getContextPath() + "/register");
     }
 }

@@ -32,7 +32,7 @@ public class ChangeDataAccountServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String action = req.getParameter("action");
         if (action != null) {
             switch (action) {
@@ -40,7 +40,7 @@ public class ChangeDataAccountServlet extends HttpServlet {
                     try {
                         profileService.save(req);
                     } catch (ValidationException e) {
-                        req.setAttribute(Constants.ERROR, e.getMessage());
+                        req.getSession().setAttribute(Constants.ERROR, e.getMessage());
                     }
                     break;
                 case "cancel":
@@ -48,6 +48,6 @@ public class ChangeDataAccountServlet extends HttpServlet {
                     return;
             }
         }
-        context.getRequestDispatcher("/WEB-INF/views/account_change.jsp").forward(req, resp);
+        resp.sendRedirect(context.getContextPath() + "/account/change");
     }
 }

@@ -25,9 +25,11 @@
         <div class="d-grid gap-2">
             <c:if test="${error != null}">
                 <div id="error">${error}</div>
+                <c:remove var="error" scope="session" />
             </c:if>
             <c:if test="${ok != null}">
                 <div id="ok">${ok}</div>
+                <c:remove var="ok" scope="session" />
             </c:if>
             <button type="submit" class="btn btn-primary btn-success" name="action" value="save">Сохранить</button>
             <button type="submit" class="btn btn-primary btn-dark" name="action" value="cancel">Отмена</button>

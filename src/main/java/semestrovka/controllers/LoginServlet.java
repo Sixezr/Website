@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
             if (req.getParameter("remember") != null) {
                 securityService.signIn(req, resp);
@@ -50,8 +50,8 @@ public class LoginServlet extends HttpServlet {
             }
             return;
         } catch (ValidationException e) {
-            req.setAttribute(Constants.ERROR, e.getMessage());
+            req.getSession().setAttribute(Constants.ERROR, e.getMessage());
         }
-        context.getRequestDispatcher("/WEB-INF/views/signin.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

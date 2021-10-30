@@ -36,7 +36,7 @@ public final class Validator extends AbstractValidator {
         }
         String photo = fileSystemManager.downloadFile(req);
 
-        req.setAttribute(OK, "Товар добавлен");
+        req.getSession().setAttribute(OK, "Товар добавлен");
         return new ProductModel(name, price, photo);
     }
 
@@ -81,7 +81,7 @@ public final class Validator extends AbstractValidator {
         fileSystemManager.downloadNewFile(req, pictureName);
 
         ProductModel productModel = new ProductModel(id, name, price, pictureName);
-        req.setAttribute(OK, "Товар обновлен");
+        req.getSession().setAttribute(OK, "Товар обновлен");
         return productModel;
     }
 
@@ -119,12 +119,11 @@ public final class Validator extends AbstractValidator {
         phoneNumber = phoneNumber.trim();
         pass = pass.trim();
 
-        if (user.getEmail() != null && user.getPass() != null) {
-            if (user.getName().equals(name) && user.getSecondName().equals(secondName)
-                    && user.getPhoneNumber().equals(phoneNumber) && user.getPass().equals(pass)) {
-                throw new EqualDataException("Нечего изменить");
-            }
+        if (user.getName().equals(name) && user.getSecondName().equals(secondName)
+                && user.getPhoneNumber().equals(phoneNumber) && pass.isEmpty() || user.getPass().equals(md5Custom(pass))) {
+            throw new EqualDataException("Нечего изменить");
         }
+
         if (!isValidName(name)) {
             throw new InvalidNameException("Имя должно содержать только буквы, а размер не более 12 и не менее 2");
         }
@@ -144,7 +143,7 @@ public final class Validator extends AbstractValidator {
         if (!pass.isEmpty()) {
             user.setPass(md5Custom(pass));
         }
-        req.setAttribute(OK, "Ваши данные изменены");
+        req.getSession().setAttribute(OK, "Ваши данные изменены");
         return user;
     }
 
@@ -152,7 +151,7 @@ public final class Validator extends AbstractValidator {
         String email = req.getParameter(EMAIL_PARAMETER);
         String pass = req.getParameter(PASS_PARAMETER);
 
-        req.setAttribute("repeated_email", email);
+        req.getSession().setAttribute("repeated_email", email);
         if (email == null) {
             throw new EmptyParametrException("Email не может быть пустым");
         } else if (pass == null) {
@@ -176,10 +175,10 @@ public final class Validator extends AbstractValidator {
         String email = req.getParameter(EMAIL_PARAMETER);
         String pass = req.getParameter(PASS_PARAMETER);
 
-        req.setAttribute("repeated_name", name);
-        req.setAttribute("repeated_s_name", secondName);
-        req.setAttribute("repeated_phone", phoneNumber);
-        req.setAttribute("repeated_email", email);
+        req.getSession().setAttribute("repeated_name", name);
+        req.getSession().setAttribute("repeated_s_name", secondName);
+        req.getSession().setAttribute("repeated_phone", phoneNumber);
+        req.getSession().setAttribute("repeated_email", email);
 
         if (name == null) {
             throw new EmptyParametrException("Имя не может быть пустым");

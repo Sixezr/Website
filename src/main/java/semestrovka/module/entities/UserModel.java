@@ -105,4 +105,18 @@ public class UserModel {
     public int hashCode() {
         return Objects.hash(name, secondName, email, pass, phoneNumber);
     }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", email='" + email + '\'' +
+                ", pass='" + pass + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", token='" + token + '\'' +
+                ", isAdmin=" + isAdmin +
+                '}';
+    }
 }

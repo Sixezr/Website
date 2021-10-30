@@ -41,14 +41,14 @@ public class MenuAddingServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         if (securityService.isAdmin(req)) {
             try {
                 cartService.saveProduct(req);
             } catch (ValidationException e) {
-                req.setAttribute(Constants.ERROR, e.getMessage());
+                req.getSession().setAttribute(Constants.ERROR, e.getMessage());
             }
-            context.getRequestDispatcher("/WEB-INF/views/adding.jsp").forward(req, resp);
+            resp.sendRedirect(context.getContextPath() + "/menu/add");
         }
     }
 }

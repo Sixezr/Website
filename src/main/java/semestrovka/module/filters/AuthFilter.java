@@ -42,8 +42,12 @@ public class AuthFilter implements Filter {
             }
         }
 
+        if (request.getRequestURI().equals(context.getContextPath() + "/login")) {
+            flag = !flag;
+        }
+
         if (flag && !securityService.authenticate(request)) {
-            response.sendRedirect(context.getContextPath() + "/login?redirect="+request.getRequestURI());
+            response.sendRedirect(context.getContextPath() + "/login?redirect=" + request.getRequestURI());
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);

@@ -9,6 +9,7 @@
                 <label for="email" class="form-label">Email</label>
                 <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp"
                        value="${repeated_email == "" ? "" : repeated_email}" required>
+                <c:remove var="repeated_email" scope="session" />
                 <div id="emailHelp" class="form-text">Никто не узнает ваши данные</div>
             </div>
             <div class="mb-3">
@@ -23,6 +24,7 @@
             <div><a href="<c:url value="/register"/>" id="register-href">Нет аккаунта? Создайте его!</a></div>
             <c:if test="${error != null}">
                 <div id="error">${error}</div>
+                <c:remove var="error" scope="session" />
             </c:if>
             <button type="submit" class="submit-button">Войти</button>
             <div>

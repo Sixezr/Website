@@ -19,15 +19,17 @@
             <input class="form-control" id="formFileMultiple" type="file" name="photo" accept="image/*,image/jpeg">
             <c:if test="${error != null}">
                 <div id="error">${error}</div>
+                <c:remove var="error" scope="session" />
             </c:if>
             <c:if test="${ok != null}">
                 <div id="ok">${ok}</div>
+                <c:remove var="ok" scope="session" />
             </c:if>
             <input name="id" value="${id}" hidden>
             <input name="picture" value="${picture}" hidden>
             <div>
-                <button type="submit" name="action" value="change" class="btn btn-outline-secondary">Изменить</button>
-                <button type="submit" name="action" value="delete" class="btn btn-outline-danger">Удалить товар</button>
+                <button type="submit" name="admin_action" value="change" class="btn btn-outline-secondary">Изменить</button>
+                <button type="submit" name="admin_action" value="delete" class="btn btn-outline-danger">Удалить товар</button>
             </div>
         </div>
     </form>

@@ -48,7 +48,7 @@ public class ChangeProductServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (securityService.isAdmin(req)) {
             try {
-                String action = req.getParameter("action");
+                String action = req.getParameter("admin_action");
                 switch (action) {
                     case "change":
                         cartService.updateProduct(req);
@@ -60,9 +60,9 @@ public class ChangeProductServlet extends HttpServlet {
                         break;
                 }
             } catch (ValidationException e) {
-                req.setAttribute(Constants.ERROR, e.getMessage());
+                req.getSession().setAttribute(Constants.ERROR, e.getMessage());
             }
-            context.getRequestDispatcher("/WEB-INF/views/change_product.jsp").forward(req, resp);
+            resp.sendRedirect(context.getContextPath() + "/menu/change?product_id=" + req.getParameter("product_id"));
         } else {
             context.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
         }
