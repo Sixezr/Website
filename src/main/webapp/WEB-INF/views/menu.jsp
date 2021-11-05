@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="t" %>
 
-<t:mainLayout title="Меню">
+<t:mainLayout title="Меню" jsUrl="/js/scripts.js">
     <div class="album py-5">
         <div class="container">
             <c:if test="${user.isAdmin()}">
@@ -25,6 +25,4 @@
             </c:if>
         </div>
     </div>
-    <script>context = "${pageContext.request.contextPath}"</script>
-    <script src="<c:url value="/js/scripts.js"/>"></script>
 </t:mainLayout>

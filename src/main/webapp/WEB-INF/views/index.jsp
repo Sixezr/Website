@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib tagdir="/WEB-INF/tags" prefix="t" %>
 
-<t:mainLayout title="Myaso">
+<t:mainLayout title="Myaso" jsUrl="/js/bootstrap.min.js">
     <div class="container">
         <div class="row row-cols-3">
             <div class="col">
@@ -73,5 +73,4 @@
         </div>
     </div>
 
-    <script src="<c:url value = "/js/bootstrap.min.js"/>"></script>
 </t:mainLayout>

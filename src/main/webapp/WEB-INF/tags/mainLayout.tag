@@ -1,5 +1,6 @@
 <%@tag description="Default Layout Tag" pageEncoding="UTF-8" %>
 <%@attribute name="title" required="true" %>
+<%@attribute name="jsUrl" type="java.lang.String" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -11,6 +12,10 @@
     <link rel="shortcut icon" href="<c:url value = "/img/logo.png"/>" type="image/x-icon">
     <link rel="stylesheet" href="<c:url value = "/css/bootstrap.min.css"/>">
     <link rel="stylesheet" href="<c:url value = "/css/style.css"/>">
+    <c:if test="${jsUrl != null}">
+        <script>context = "${pageContext.request.contextPath}"</script>
+        <script src="<c:url value = "${jsUrl}"/>"></script>
+    </c:if>
 </head>
 <body>
 <div class="container">
