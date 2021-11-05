@@ -4,6 +4,7 @@ import semestrovka.module.entities.CartModel;
 import semestrovka.module.entities.ProductModel;
 import semestrovka.module.exceptions.ValidationException;
 import semestrovka.module.helpers.AbstractValidator;
+import semestrovka.module.helpers.Constants;
 import semestrovka.module.managers.AbstractFileSystemManager;
 import semestrovka.module.managers.IAuthManager;
 import semestrovka.module.repositories.CartRepository;
@@ -79,6 +80,7 @@ public final class CartService implements ICartService {
     public void removeProduct(HttpServletRequest req) throws  ValidationException {
         ProductModel productModel = validator.validateChangeProductForm(req);
         productRepository.deleteById(productModel.getId());
+        req.getSession().removeAttribute("ok");
         fileSystemManager.deleteFiles(productModel.getPicture(), req.getContextPath());
     }
 

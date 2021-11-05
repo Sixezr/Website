@@ -1,6 +1,5 @@
 package semestrovka.module.managers;
 
-import org.apache.commons.io.FileUtils;
 import semestrovka.module.exceptions.FileSystemManagerException;
 
 import javax.servlet.ServletException;
@@ -8,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public final class FileSystemManager extends AbstractFileSystemManager {
 
@@ -59,15 +61,24 @@ public final class FileSystemManager extends AbstractFileSystemManager {
         copyFilesToWeb(req.getContextPath());
     }
 
-    public void copyFilesToWeb(String context) {
+    public void copyFilesToWeb(String context) throws FileSystemManagerException {
         File directory = new File(PATH_TO_UPLOADS);
         File webDirectory = new File(PATH_TO_WEB + context + PATH_TO_IMG_IN_WEB);
-        webDirectory.mkdirs();
-        if (webDirectory.listFiles().length != directory.listFiles().length) {
+
+        if (!webDirectory.exists()) {
+            webDirectory.mkdirs();
+        }
+
+        File[] listOfFiles = directory.listFiles();
+
+        Path destDir = Paths.get(webDirectory.getAbsolutePath());
+        if (listOfFiles != null) {
             try {
-                FileUtils.copyDirectory(directory, webDirectory);
+                for (File file : listOfFiles) {
+                    Files.copy(file.toPath(), destDir.resolve(file.getName()), StandardCopyOption.REPLACE_EXISTING);
+                }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new FileSystemManagerException("Ошибка при получении фотографии, повторите еще раз", e);
             }
         }
     }

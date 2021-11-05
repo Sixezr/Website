@@ -9,7 +9,7 @@ public interface IFileSystemManager {
 
     void downloadNewFile(HttpServletRequest req, String oldName) throws FileSystemManagerException;
 
-    void copyFilesToWeb(String context);
+    void copyFilesToWeb(String context) throws FileSystemManagerException;
 
     void deleteFiles(String name, String context);
 }
